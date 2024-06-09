@@ -1,15 +1,16 @@
 import pygame
-import start
-import geometry as geo
+import screenmanager as sc
+import states 
 
 
+
+    
 def main():
     pygame.init()
     font = pygame.font.SysFont(None, 30)
-    screen = start.start_window(400,200, (140,140,140), font)
-    screen.run()
-    
-
+    engine = sc.DisplayEngine('Example State machine', 60, 800, 600, font)
+    engine.run(states.StartState(engine, (140,140,140)))
+    pygame.quit()
 
 
 
