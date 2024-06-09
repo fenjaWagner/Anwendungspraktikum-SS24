@@ -1,6 +1,7 @@
 import pygame
 import input_management.text_input_box as in_box
 import Image_Management.image_logic as im
+from input_management.buttons import Button
 
 class State:
     """Interface for the states.
@@ -52,11 +53,9 @@ class StartState(State):
             print("sign in")
             self.engine.data_manager.sign_up(self.user_input.text, new_user_flag = 0)
             self.user_input.text = ''
-
                 
         else:
             pass
-
 
     def update(self, screen):
         #print("update")
@@ -89,28 +88,18 @@ class UserModeState(State):
         super().__init__(engine)
         self.engine = engine
         self.background = background
-        self.image_size = ((self.engine.size_y //3) * 0.818181, self.engine.size_y //3)
         self.group = pygame.sprite.Group()
-        self.image_loader = im.Image_Loader(self.engine)
+        self.image_loader = im.Image_Loader(self.engine, self.background)
         self.get_images()
+        self.button1 = Button(self.engine.size_x //5 - 25, self.engine.size_y//2, 50, 25, self.engine.font,'')
+        self.group.add(self.button1)
 
     def get_images(self):
         self.img1, self.img2, self.img3, self.img4, self.img5 = self.image_loader.get_image()
-        self.img1 =  pygame.transform.scale(self.img1, self.image_size)
-        self.img2 =  pygame.transform.scale(self.img2, self.image_size)
-        self.img3 =  pygame.transform.scale(self.img3, self.image_size)
-        self.img4 =  pygame.transform.scale(self.img4, self.image_size)
-        self.img5 =  pygame.transform.scale(self.img5, self.image_size)
+        
         
     def on_draw(self, surface):
-        surface.fill(self.background)
-        surface.blit(self.img1, ((self.engine.size_x-(4*self.image_size[0]))//5, 50))
-        surface.blit(self.img2, ((self.engine.size_x-(4*self.image_size[0]))*2//5 + self.image_size[0], 50))
-        surface.blit(self.img3, ((self.engine.size_x-(4*self.image_size[0]))*3//5 + 2*self.image_size[0], 50))
-        surface.blit(self.img4, ((self.engine.size_x-(4*self.image_size[0])) * 4//5 + 3*self.image_size[0], 50))
-        surface.blit(self.img5, ((self.engine.size_x - self.image_size[0]) //2 , (self.engine.size_y // 3)*1.5))
-
-        self.group.draw(surface)
+        self.update(surface)
 
     def on_event(self, event):
         self.group.update(event)
@@ -118,6 +107,9 @@ class UserModeState(State):
             if event.key == pygame.K_SPACE:
                 self.engine.machine.next_state = StartState(self.engine, (140,140,140))
 
+    def update(self, surface):
+        self.image_loader.draw_image(surface)
+        self.group.draw(surface)
 
 
 class LogInError(State):
