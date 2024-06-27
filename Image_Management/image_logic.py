@@ -21,7 +21,7 @@ class Image_Loader:
 
     def draw_image(self, surface):
         surface.fill(self.background)
-        #surface.blit(self.img1, ((self.engine.size_x-(4*self.image_size[0]))//5, 50))
+        surface.blit(self.img1, ((self.engine.size_x-(4*self.image_size[0]))//5, 50))
         surface.blit(self.img2, ((self.engine.size_x-(4*self.image_size[0]))*2//5 + self.image_size[0], 50))
         surface.blit(self.img3, ((self.engine.size_x-(4*self.image_size[0]))*3//5 + 2*self.image_size[0], 50))
         surface.blit(self.img4, ((self.engine.size_x-(4*self.image_size[0])) * 4//5 + 3*self.image_size[0], 50))

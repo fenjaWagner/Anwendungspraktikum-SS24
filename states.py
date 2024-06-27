@@ -91,9 +91,7 @@ class UserModeState(State):
         self.group = pygame.sprite.Group()
         self.image_loader = im.Image_Loader(self.engine, self.background)
         self.get_images()
-        self.button1 = Button(self.engine.size_x //5 - 25, self.engine.size_y//2, 50, 25, self.engine.font,'')
-        self.group.add(self.button1)
-
+        
     def get_images(self):
         self.img1, self.img2, self.img3, self.img4, self.img5 = self.image_loader.get_image()
         
