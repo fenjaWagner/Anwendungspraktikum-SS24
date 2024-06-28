@@ -9,7 +9,30 @@ class Data_Manager():
         self.engine = engine
         self.user = None
         self.data = self.read_data()
-        self.user_data = None
+        self.user_data = {  "detail_mode":{"generic_detail":{"correct": 0,
+                                                           "out_of": 0},
+                                        "individual_detail":{"correct": 0,
+                                                           "out_of": 0},
+                                        "no_detail":{"correct": 0,
+                                                           "out_of": 0}},
+                            "game_modes":{  "mixed": {"correct": 0,
+                                                           "out_of": 0},
+                                            "poc_only": {"correct": 0,
+                                                           "out_of": 0},
+                                            "white_only": {"correct": 0,
+                                                           "out_of": 0},
+                                            "poc_between_whites": {"correct": 0,
+                                                           "out_of": 0},
+                                            "white_between_poc": {"correct": 0,
+                                                           "out_of": 0},
+                                            "female_only": {"correct": 0,
+                                                           "out_of": 0},
+                                            "male_only": {"correct": 0,
+                                                           "out_of": 0},
+                                            "female_between_males": {"correct": 0,
+                                                           "out_of": 0},
+                                            "male_between_female": {"correct": 0,
+                                                           "out_of": 0}}}
 
     def read_data(self):
         """Reads data from file.

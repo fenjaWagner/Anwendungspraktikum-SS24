@@ -1,5 +1,6 @@
 import pygame
 import data_manager as dm
+import conf
 
 class Machine:
     """Holds the current state of the screen.
@@ -39,9 +40,11 @@ class DisplayEngine:
         self.running = True
         #self.delta = 0
         #self.fps = fps
+        self.config = conf.conf
         self.data_manager = dm.Data_Manager(self)
 
         self.machine = Machine()
+
 
     def loop(self):
         """Updates the screen.
