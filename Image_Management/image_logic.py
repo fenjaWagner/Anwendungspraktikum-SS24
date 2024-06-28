@@ -59,11 +59,12 @@ class Image_Manager:
         self.detail_mode = self.engine.config["detail_mode"]
         self.game_modes = self.engine.config["game_modes"]
         self.item_dict = self.get_image_item_dict()
-        """self.male = self.dict["gender"]["male"]
+        self.male = self.dict["gender"]["male"]
         self.female = self.dict["gender"]["female"]
         self.poc = self.dict["ethnicy"]["poc"]
         self.white = self.dict["ethnicy"]["white"]
-        self.identity = self.dict["identity"]"""
+        self.identity = self.dict["identity"]
+        self.len_id = len(list(self.identity.keys()))
 
         self.current_images = []
 
@@ -75,11 +76,13 @@ class Image_Manager:
     
     def load_images(self):
         np.random.seed()
-        mode_index = np.random.randint(0, len(self.game_modes))
+        mode_index = 0
         mode = self.game_modes[mode_index]
 
         if mode == "mixed":
-            
+            id_index = 
+
+
             
 
 
