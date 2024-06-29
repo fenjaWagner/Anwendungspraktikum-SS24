@@ -104,6 +104,7 @@ class UserModeState(State):
         self.image_loader.on_event(event)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
+                self.engine.data_manager.write_data()
                 self.engine.machine.next_state = StartState(self.engine, (140,140,140))
 
     def update(self, surface):

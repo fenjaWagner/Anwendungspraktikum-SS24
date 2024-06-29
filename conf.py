@@ -9,7 +9,7 @@
 #               "female_only" (only pictures of females)
 #               "male_only" (only pictures of males)
 #               "female_between_males" (expression picture female, others male)
-#               "male_between_female" (expression picture male, others female)
+#               "male_between_females" (expression picture male, others female)
 
 
 conf = {
@@ -20,6 +20,6 @@ conf = {
                    "female_only", 
                    "male_only", 
                    "female_between_males",
-                   "male_between_female"]
+                   "male_between_females"]
 }
 
