@@ -1,0 +1,155 @@
+female_between_males
+Head: 119577
+Comp_Head: 045178
+TestList: ['134271', '018558', '117943']
+place: 0
+1
+right choice
+non_poc_between_pocs
+Head: 036886
+Comp_Head: 010345
+TestList: ['050341', '043753', '058717']
+place: 0
+1
+right choice
+male_between_females
+Head: 028224
+Comp_Head: 074968
+TestList: ['130833', '010345', '045178']
+place: 2
+3
+right choice
+female_between_males
+Head: 119577
+Comp_Head: 045178
+TestList: ['039454', '074968', '015355']
+place: 0
+2
+wrong choice
+poc_between_non_pocs
+Head: 085911
+Comp_Head: 077813
+TestList: ['000083', '000050', '049315']
+place: 0
+1
+right choice
+non_poc_between_pocs
+Head: 033449
+Comp_Head: 040079
+TestList: ['030074', '022554', '014442']
+place: 2
+2
+wrong choice
+female_only
+Head: 006912
+Comp_Head: 014442
+TestList: ['043483', '000198', '045178']
+place: 0
+1
+right choice
+male_between_females
+Head: 009699
+Comp_Head: 017014
+TestList: ['049315', '005644', '119577']
+place: 3
+3
+wrong choice
+female_only
+Head: 083317
+Comp_Head: 023230
+TestList: ['038601', '114212', '070373']
+place: 0
+3
+wrong choice
+male_only
+Head: 099039
+Comp_Head: 117943
+TestList: ['046521', '058717', '074968']
+place: 1
+2
+right choice
+non_poc_between_pocs
+Head: 008585
+Comp_Head: 008971
+TestList: ['022554', '060530', '077813']
+place: 0
+1
+right choice
+female_only
+Head: 070373
+Comp_Head: 040972
+TestList: ['000083', '113771', '042039']
+place: 1
+2
+right choice
+mixed
+Head: 036484
+Comp_Head: 027988
+TestList: ['040079', '030942', '009434']
+place: 3
+4
+right choice
+female_between_males
+Head: 008971
+Comp_Head: 008585
+TestList: ['039106', '036103', '058717']
+place: 2
+3
+right choice
+non_poc_between_pocs
+Head: 119577
+Comp_Head: 045178
+TestList: ['018558', '058717', '043753']
+place: 1
+3
+wrong choice
+mixed
+Head: 017014
+Comp_Head: 009699
+TestList: ['040972', '010345', '159141']
+place: 3
+2
+wrong choice
+poc_between_non_pocs
+Head: 006912
+Comp_Head: 014442
+TestList: ['007712', '077301', '047443']
+place: 3
+2
+wrong choice
+poc_between_non_pocs
+Head: 013213
+Comp_Head: 018558
+TestList: ['008971', '067689', '009434']
+place: 0
+1
+right choice
+non_poc_between_pocs
+Head: 000083
+Comp_Head: 009434
+TestList: ['039454', '043753', '085911']
+place: 0
+3
+wrong choice
+female_only
+Head: 001454
+Comp_Head: 067085
+TestList: ['000083', '033449', '008585']
+place: 1
+3
+wrong choice
+mixed
+Head: 038601
+Comp_Head: 067689
+TestList: ['039106', '036886', '043753']
+place: 1
+3
+wrong choice
+male_between_females
+Head: 046521
+Comp_Head: 033799
+TestList: ['014442', '121265', '030074']
+place: 1
+
+
+"test_modes": {"detail_mode": {"generic_detail": {"correct": 11, "out_of": 21}, "individual_detail": {"correct": 0, "out_of": 0}, "no_detail": {"correct": 0, "out_of": 0}}, "game_modes": {"mixed": {"correct": 1, "out_of": 3}, "poc_between_non_pocs": {"correct": 2, "out_of": 3}, "poc_only": {"correct": 0, "out_of": 0}, "non_poc_between_pocs": {"correct": 2, "out_of": 5}, "non_poc_only": {"correct": 0, "out_of": 0}, "female_only": {"correct": 2, "out_of": 4}, "male_only": {"correct": 1, "out_of": 1}, "female_between_males": {"correct": 2, "out_of": 3}, "male_between_females": {"correct": 1, "out_of": 2}}}}

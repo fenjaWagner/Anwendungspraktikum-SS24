@@ -41,6 +41,7 @@ class DisplayEngine:
         #self.delta = 0
         #self.fps = fps
         self.config = conf.conf
+        self.image_config = conf.image_conf
         self.data_manager = dm.Data_Manager(self)
 
         self.machine = Machine()

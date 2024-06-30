@@ -2,16 +2,29 @@ import pygame
 import json
 import numpy as np
 
+
 class Image_Loader:
     def __init__(self, engine, background) -> None:
         self.engine = engine
         self.background = background
-        self.image_size = ((self.engine.size_y //3) * 0.818181, self.engine.size_y //3)
-
+        self.get_comp_image_size()
         self.image_manager = Image_Manager(self.engine)
         self.image_manager.load_images()    
         self.load_image()
-        
+
+    def get_comp_image_size(self):
+        if ((6/24)*self.engine.size_x) / ((6/16)*self.engine.size_y) <= 178/ 218:
+            x = (6/24)*self.engine.size_x
+            factor = x / 178
+            self.comp_pic_size = (int(x), int(218 * factor))
+            self.exp_pic_size = (int(224 * factor), int(224 * factor))
+        else: 
+            y = (6/16)*self.engine.size_y
+            factor = y /218
+            self.comp_pic_size = (int(178 * factor),int(y))
+            self.exp_pic_size = (int(224 * factor), int(224 * factor))
+
+
     def load_image(self):
         
         self.img1 = self.image_manager.current_images[0]
@@ -19,11 +32,11 @@ class Image_Loader:
         self.img3 = self.image_manager.current_images[2]
         self.img4 = self.image_manager.current_images[3]
         self.img5 = self.image_manager.proc_head
-        self.img1 =  pygame.transform.scale(self.img1, self.image_size)
-        self.img2 =  pygame.transform.scale(self.img2, self.image_size)
-        self.img3 =  pygame.transform.scale(self.img3, self.image_size)
-        self.img4 =  pygame.transform.scale(self.img4, self.image_size)
-        self.img5 =  pygame.transform.scale(self.img5, self.image_size)
+        self.img1 =  pygame.transform.scale(self.img1, self.comp_pic_size)
+        self.img2 =  pygame.transform.scale(self.img2, self.comp_pic_size)
+        self.img3 =  pygame.transform.scale(self.img3, self.comp_pic_size)
+        self.img4 =  pygame.transform.scale(self.img4, self.comp_pic_size)
+        self.img5 =  pygame.transform.scale(self.img5, self.exp_pic_size)
         self.rect1 = self.img1.get_rect()
         self.rect2 = self.img2.get_rect()
         self.rect3 = self.img3.get_rect()
@@ -32,11 +45,11 @@ class Image_Loader:
 
     def draw_image(self, surface):
         surface.fill(self.background)
-        surface.blit(self.img1, ((self.engine.size_x-(4*self.image_size[0]))//5, 50))
-        surface.blit(self.img2, ((self.engine.size_x-(4*self.image_size[0]))*2//5 + self.image_size[0], 50))
-        surface.blit(self.img3, ((self.engine.size_x-(4*self.image_size[0]))*3//5 + 2*self.image_size[0], 50))
-        surface.blit(self.img4, ((self.engine.size_x-(4*self.image_size[0])) * 4//5 + 3*self.image_size[0], 50))
-        surface.blit(self.img5, ((self.engine.size_x - self.image_size[0]) //2 , (self.engine.size_y // 3)*1.5))
+        surface.blit(self.img1, ((self.engine.size_x-(4*self.comp_pic_size[0]))//5, ((self.engine.size_y//2)-self.comp_pic_size[1])//2))
+        surface.blit(self.img2, ((self.engine.size_x-(4*self.comp_pic_size[0]))*2//5 + self.comp_pic_size[0],  ((self.engine.size_y//2)-self.comp_pic_size[1])//2))
+        surface.blit(self.img3, ((self.engine.size_x-(4*self.comp_pic_size[0]))*3//5 + 2*self.comp_pic_size[0],  ((self.engine.size_y//2)-self.comp_pic_size[1])//2))
+        surface.blit(self.img4, ((self.engine.size_x-(4*self.comp_pic_size[0])) * 4//5 + 3*self.comp_pic_size[0],  ((self.engine.size_y//2)-self.comp_pic_size[1])//2))
+        surface.blit(self.img5, ((self.engine.size_x - self.exp_pic_size[0]) //2 , self.engine.size_y //2 + (self.engine.size_y//2-self.exp_pic_size[1])//2))
 
     def get_image(self):
         return self.img1, self.img2, self.img3, self.img4, self.img5
@@ -98,12 +111,12 @@ class Image_Manager:
         self.mode = None
 
         self.item_dict = self.get_image_item_dict()
-        self.male = self.item_dict["gender"]["male"]
-        self.female = self.item_dict["gender"]["female"]
-        self.poc = self.item_dict["ethnicy"]["poc"]
-        self.white = self.item_dict["ethnicy"]["white"]
-        self.identity = self.item_dict["identity"]
-        self.len_id = len(list(self.identity.keys()))
+        self.image_config = self.engine.image_config
+        self.mode = "mixed"
+        self.exp_list = self.item_dict[self.image_config[self.mode]['exp_list']]
+        self.comp_pic_list = self.item_dict[self.image_config[self.mode]['comp_pic_list']]
+        self.identity = self.item_dict['identity_pic']
+
 
         self.img_path = "file_system/"+self.detail_mode+"/"
         self.img_path_unproc = "file_system/unprocessed/"
@@ -170,98 +183,27 @@ class Image_Manager:
     
     def load_images(self):
         np.random.seed()
-        #mode_index = np.random.randint(len(self.game_modes))
-        #self.mode = self.game_modes[mode_index]
-        self.mode = "male_between_females"
+        mode_index = np.random.randint(len(self.game_modes))
+        self.mode = self.game_modes[mode_index]
         print(self.mode)
 
-        if self.mode == "mixed":
-            print("mixed")
-            id_index = np.random.randint(self.len_id)
-            self.id = list(self.identity.keys())[id_index]
+        self.exp_list = self.item_dict[self.image_config[self.mode]['exp_list']]
+        self.comp_pic_list = self.item_dict[self.image_config[self.mode]['comp_pic_list']]     
 
-            self.get_compare_images()
-            self.get_random_image_list(list(self.identity.keys()))
-            self.place_com_img()
+        id_index = np.random.randint(len(self.exp_list))
+        self.id = self.exp_list[id_index]
+        self.get_compare_images()
+        self.get_random_image_list(self.comp_pic_list)
+        self.place_com_img()
 
-        elif self.mode == "poc_only":
-            print("poc_only")
-            id_index = np.random.randint(len(self.poc))
-            self.id = self.poc[id_index]
-
-            self.get_compare_images()
-            self.get_random_image_list(self.poc)
-            self.place_com_img()
-
-        elif self.mode =="white_only":
-            print("white_only")
-            id_index = np.random.randint(len(self.white))
-            self.id = self.white[id_index]
-
-            self.get_compare_images()
-            self.get_random_image_list(self.white)
-            self.place_com_img()
-
-        elif self.mode =="poc_between_whites":
-            print("poc_between_whites")
-            id_index = np.random.randint(len(self.poc))
-            self.id = self.poc[id_index]
-
-            self.get_compare_images()
-            self.get_random_image_list(self.white)
-            self.place_com_img()
-
-        elif self.mode =="white_between_poc":
-            print("white_between_pocs")
-            id_index = np.random.randint(len(self.white))
-            self.id = self.white[id_index]
-
-            self.get_compare_images()
-            self.get_random_image_list(self.poc)
-            self.place_com_img()
-
-        elif self.mode =="female_only":
-            print("female_only")
-            id_index = np.random.randint(len(self.female))
-            self.id = self.female[id_index]
-
-            self.get_compare_images()
-            self.get_random_image_list(self.female)
-            self.place_com_img()
-
-        elif self.mode =="male_only":
-            print("male_only")
-            id_index = np.random.randint(len(self.male))
-            self.id = self.male[id_index]
-
-            self.get_compare_images()
-            self.get_random_image_list(self.male)
-            self.place_com_img()
-
-        elif self.mode =="male_between_females":
-            print("male_between_females")
-            id_index = np.random.randint(len(self.male))
-            self.id = self.male[id_index]
-
-            self.get_compare_images()
-            self.get_random_image_list(self.female)
-            self.place_com_img()
-
-        elif self.mode =="female_between_males":
-            print("female_between_males")
-            id_index = np.random.randint(len(self.female))
-            self.id = self.female[id_index]
-
-            self.get_compare_images()
-            self.get_random_image_list(self.male)
-            self.place_com_img()
         
-
     def verify_and_renew(self, picked_img):
-        print("verify:", picked_img)
-        if picked_img == self.comp_pic_place:
+        if picked_img -1 == self.comp_pic_place:
+            print("right choice")
             self.user_data['detail_mode'][self.detail_mode]['correct'] += 1
             self.user_data['game_modes'][self.mode]['correct'] +=1
+        else:
+            print("wrong choice")
         
         self.user_data['detail_mode'][self.detail_mode]['out_of'] += 1
         self.user_data['game_modes'][self.mode]['out_of'] +=1
