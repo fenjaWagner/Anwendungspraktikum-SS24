@@ -1,6 +1,7 @@
 # detail modes: "generic_detail" (Detail of the dummy head)
 #               "individual_detail" (Detail of the expression individual)
 #               "no_detail" (coarse head shapes)
+#               "identity" (Reconstruction of the whole face without expression transfer)
 # game_modes:   "mixed" (random pictures)
 #               "poc_only" (only pictures of poc)
 #               "non_poc_only" (only picture of non_poc people)
@@ -13,7 +14,7 @@
 
 
 conf = {
-    "detail_mode": "generic_detail",
+    "detail_mode": "no_detail",
     "game_modes": ["mixed", 
                    "poc_between_non_pocs", 
                    "non_poc_between_pocs", 

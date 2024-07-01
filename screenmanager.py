@@ -54,7 +54,9 @@ class DisplayEngine:
             self.machine.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    self.data_manager.write_data()
                     self.running = False
+
                 else:
                     self.machine.current.on_event(event)
 
