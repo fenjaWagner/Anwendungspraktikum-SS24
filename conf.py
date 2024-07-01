@@ -14,7 +14,7 @@
 
 
 conf = {
-    "detail_mode": "no_detail",
+    "detail_mode": "individual_detail",
     "game_modes": ["mixed", 
                    "poc_between_non_pocs", 
                    "non_poc_between_pocs", 

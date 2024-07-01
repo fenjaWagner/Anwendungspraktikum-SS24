@@ -142,7 +142,7 @@ class Image_Manager:
         comp_num = self.identity[self.id][pic_num]
         self.comp_pic = pygame.image.load(self.img_path_unproc + comp_num+".jpg").convert()
 
-        print("Head:", proc_num)
+        print("Exp_Head:", proc_num)
         print("Comp_Head:", comp_num)
 
     def get_random_image_list(self, li):
@@ -177,7 +177,7 @@ class Image_Manager:
 
     def place_com_img(self):
         self.comp_pic_place = np.random.randint(4)
-        print("place:", self.comp_pic_place)
+        print("place:", self.comp_pic_place +1)
         self.current_images.insert(self.comp_pic_place, self.comp_pic)
             
     

@@ -14,6 +14,8 @@ class Data_Manager():
                                         "individual_detail":{"correct": 0,
                                                            "out_of": 0},
                                         "no_detail":{"correct": 0,
+                                                           "out_of": 0},
+                                        "identity":{"correct": 0,
                                                            "out_of": 0}},
                             "game_modes":{  }}
         for mode in list(self.engine.image_config.keys()):
