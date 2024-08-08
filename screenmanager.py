@@ -19,7 +19,7 @@ class Machine:
 class DisplayEngine:
     """Holds the screen and updates it depending on the state of the machine.
     """
-    def __init__(self, caption: str, size_x, size_y, font, flags=0):
+    def __init__(self, flags=0):
         """DisplayEngine Init
 
         Args:
@@ -30,20 +30,28 @@ class DisplayEngine:
             font (_type_): used font
             flags (int, optional): _description_. Defaults to 0.
         """
-        pygame.display.set_caption(caption)
-        self.size_x = size_x
-        self.size_y = size_y
-        self.font = font
-        self.surface = pygame.display.set_mode((size_x, size_y), flags)
-        self.rect = self.surface.get_rect()
+        
+        self.read_configs()
+        self.set_layout()
         self.running = True
+        self.data_manager = dm.Data_Manager(self)
+        self.machine = Machine()
+
+    def read_configs(self):
         self.config = conf.conf
         self.layout_config = conf.conf["layout"]
         self.image_config = conf.image_conf
-        self.data_manager = dm.Data_Manager(self)
 
-        self.machine = Machine()
 
+    def set_layout(self):
+        self.caption = self.layout_config["caption"]
+        pygame.display.set_caption(self.caption)
+        self.size_x = self.layout_config["screen_size"][0]
+        self.size_y = self.layout_config["screen_size"][1]
+        self.font = self.layout_config["font"]
+        self.surface = pygame.display.set_mode((self.size_x, self.size_y), flags)
+        self.rect = self.surface.get_rect()
+        
 
     def loop(self):
         """Updates the screen.

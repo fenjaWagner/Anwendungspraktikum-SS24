@@ -1,3 +1,4 @@
+import pygame
 # detail modes: "generic_detail" (Detail of the dummy head)
 #               "individual_detail" (Detail of the expression individual)
 #               "no_detail" (coarse head shapes)
@@ -14,7 +15,7 @@
 
 
 conf = {"detail_mode": "individual_detail",
-        "order": "exp_proc", # or exp_unproc
+        "order": "exp_unproc", # or exp_proc
         "game_modes": ["mixed", 
                    "poc_between_non_pocs", 
                    "non_poc_between_pocs", 
@@ -22,7 +23,10 @@ conf = {"detail_mode": "individual_detail",
                    "male_only", 
                    "female_between_males",
                    "male_between_females"],
-        "layout": {"original_image_size": (178, 218),
+        "layout": {"font": pygame.font.SysFont(None, 30), 
+                    "caption": "Fancy Name",
+                    "screen_size": (1400,750),
+                    "original_image_size": (178, 218),
                    "processed_image_size": (224,224),
                    "background_color": (140,140,140)
                    }
@@ -57,13 +61,13 @@ image_conf = {"mixed": {"exp_list": 'identity_all',
                         "no_detail": {"exp_heads_path": "file_system/processed/no_detail/",
                                     "comp_heads_path": "file_system/unprocessed/"}},
             
-            "exp_unproc": {"identity_swapped": {"comp_heads_path": "file_system/processed/identity/",
+            "exp_unproc": {"identity": {"comp_heads_path": "file_system/processed/identity/",
                                     "exp_heads_path": "file_system/unprocessed/"},
-                        "generic_detail_swapped": {"comp_heads_path": "file_system/processed/generic_detail/",
+                        "generic_detail": {"comp_heads_path": "file_system/processed/generic_detail/",
                                     "exp_heads_path": "file_system/unprocessed/"},
-                        "individual_detail_swapped": {"comp_heads_path": "file_system/processed/individual_detail/",
+                        "individual_detail": {"comp_heads_path": "file_system/processed/individual_detail/",
                                     "exp_heads_path": "file_system/unprocessed/"},
-                        "no_detail_swapped": {"comp_heads_path": "file_system/processed/no_detail/",
+                        "no_detail": {"comp_heads_path": "file_system/processed/no_detail/",
                                     "exp_heads_path": "file_system/unprocessed/"}}                   
             }
 

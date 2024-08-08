@@ -17,7 +17,7 @@ class Image_Loader:
         self.background = background
         self.image_manager = Image_Manager(self.engine)
         self.detail_mode = self.engine.config["detail_mode"]
-        self.comp_mode = self.engine.config["order"]
+        self.order = self.engine.config["order"]
 
         self.get_comp_image_size()
         self.image_manager.load_images()
@@ -29,8 +29,8 @@ class Image_Loader:
                                  self.engine.layout_config["processed_image_size"]],
                     "exp_unproc": [self.engine.layout_config["processed_image_size"],
                                  self.engine.layout_config["original_image_size"]]}
-        comp_size = size_dict[self.comp_mode][0]
-        exp_size = size_dict[self.comp_mode][1]
+        comp_size = size_dict[self.order][0]
+        exp_size = size_dict[self.order][1]
                 
         width_factor = (6 / 24) * self.engine.size_x
         height_factor = (6 / 16) * self.engine.size_y
@@ -117,7 +117,7 @@ class Image_Manager:
         self.engine = engine
         self.detail_mode = self.engine.config["detail_mode"]
         self.game_modes = self.engine.config["game_modes"]
-        self.comp_mode = self.engine.config["order"]
+        self.order = self.engine.config["order"]
         self.mode = None
 
         self.item_dict = self.get_image_item_dict()
@@ -127,8 +127,8 @@ class Image_Manager:
         self.comp_pic_list = self.item_dict[self.image_config[self.mode]['comp_pic_list']]
         self.identity = self.item_dict['identity_pic']
 
-        self.img_path_exp = self.engine.image_config[self.comp_mode][self.detail_mode]["exp_heads_path"]
-        self.img_path_comp = self.engine.image_config[self.comp_mode][self.detail_mode]["comp_heads_path"]
+        self.img_path_exp = self.engine.image_config[self.order][self.detail_mode]["exp_heads_path"]
+        self.img_path_comp = self.engine.image_config[self.order][self.detail_mode]["comp_heads_path"]
 
         self.id = None
         self.comp_pic_place = None
@@ -217,15 +217,17 @@ class Image_Manager:
         Args:
             picked_img (int): Index of the image picked by the user.
         """
+        print("ORder: ", self.order)
+        print(self.user_data)
         if picked_img -1 == self.comp_pic_place:
             print("right choice")
-            self.user_data['detail_mode'][self.detail_mode]['correct'] += 1
-            self.user_data['game_modes'][self.mode]['correct'] +=1
+            self.user_data[self.order]['detail_mode'][self.detail_mode]['correct'] += 1
+            self.user_data[self.order]['game_modes'][self.mode]['correct'] +=1
         else:
             print("wrong choice")
         
-        self.user_data['detail_mode'][self.detail_mode]['out_of'] += 1
-        self.user_data['game_modes'][self.mode]['out_of'] +=1
+        self.user_data[self.order]['detail_mode'][self.detail_mode]['out_of'] += 1
+        self.user_data[self.order]['game_modes'][self.mode]['out_of'] +=1
 
         self.load_images()
 

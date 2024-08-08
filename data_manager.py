@@ -10,17 +10,28 @@ class Data_Manager():
         self.engine = engine
         self.user = None
         self.data = self.read_data()
-        self.user_data = {  "detail_mode":{"generic_detail":{"correct": 0,
+        self.user_data = {  "exp_proc": {"detail_mode":{"generic_detail":{"correct": 0,
                                                            "out_of": 0},
-                                        "individual_detail":{"correct": 0,
+                                                        "individual_detail":{"correct": 0,
+                                                                        "out_of": 0},
+                                                        "no_detail":{"correct": 0,
+                                                                        "out_of": 0},
+                                                        "identity":{"correct": 0,
+                                                                        "out_of": 0}},
+                                        "game_modes":{  }},
+                            "exp_unproc": {"detail_mode":{"generic_detail":{"correct": 0,
                                                            "out_of": 0},
-                                        "no_detail":{"correct": 0,
-                                                           "out_of": 0},
-                                        "identity":{"correct": 0,
-                                                           "out_of": 0}},
-                            "game_modes":{  }}
-        for mode in list(self.engine.image_config.keys()):
-            self.user_data['game_modes'][mode] = {"correct": 0,
+                                                        "individual_detail":{"correct": 0,
+                                                                        "out_of": 0},
+                                                        "no_detail":{"correct": 0,
+                                                                        "out_of": 0},
+                                                        "identity":{"correct": 0,
+                                                                        "out_of": 0}},
+                                        "game_modes":{  }}
+                            }
+        for order in ["exp_proc", "exp_unproc"]:
+            for mode in (self.engine.image_config.keys()):
+                self.user_data[order]['game_modes'][mode] = {"correct": 0,
                                                     "out_of": 0}
 
     def read_data(self):
