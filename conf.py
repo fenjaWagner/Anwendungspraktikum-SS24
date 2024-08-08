@@ -12,10 +12,12 @@ import pygame
 #               "male_only" (only pictures of males)
 #               "female_between_males" (expression picture female, others male)
 #               "male_between_females" (expression picture male, others female)
+pygame.init()
+proc_path = "file_system/processed/"
+unproc_path = "file_system/unprocessed/"
 
-
-conf = {"detail_mode": "individual_detail",
-        "order": "exp_unproc", # or exp_proc
+conf = {"detail_mode": "generic_detail",
+        "order": "exp_proc", # or exp_unproc
         "game_modes": ["mixed", 
                    "poc_between_non_pocs", 
                    "non_poc_between_pocs", 
@@ -52,22 +54,22 @@ image_conf = {"mixed": {"exp_list": 'identity_all',
             "male_between_females": {"exp_list": "male",
                                     "comp_pic_list": "female"},
 
-            "exp_proc": {"identity": {"exp_heads_path": "file_system/processed/identity/",
-                                    "comp_heads_path": "file_system/unprocessed/"},
-                        "generic_detail": {"exp_heads_path": "file_system/processed/generic_detail/",
-                                    "comp_heads_path": "file_system/unprocessed/"},
-                        "individual_detail": {"exp_heads_path": "file_system/processed/individual_detail/",
-                                    "comp_heads_path": "file_system/unprocessed/"},
-                        "no_detail": {"exp_heads_path": "file_system/processed/no_detail/",
-                                    "comp_heads_path": "file_system/unprocessed/"}},
+            "exp_proc": {"identity": {"exp_heads_path": proc_path +"identity/",
+                                    "comp_heads_path": unproc_path},
+                        "generic_detail": {"exp_heads_path": proc_path +"generic_detail/",
+                                    "comp_heads_path": unproc_path},
+                        "individual_detail": {"exp_heads_path": proc_path +"individual_detail/",
+                                    "comp_heads_path": unproc_path},
+                        "no_detail": {"exp_heads_path": proc_path +"no_detail/",
+                                    "comp_heads_path": unproc_path}},
             
-            "exp_unproc": {"identity": {"comp_heads_path": "file_system/processed/identity/",
-                                    "exp_heads_path": "file_system/unprocessed/"},
-                        "generic_detail": {"comp_heads_path": "file_system/processed/generic_detail/",
-                                    "exp_heads_path": "file_system/unprocessed/"},
-                        "individual_detail": {"comp_heads_path": "file_system/processed/individual_detail/",
-                                    "exp_heads_path": "file_system/unprocessed/"},
-                        "no_detail": {"comp_heads_path": "file_system/processed/no_detail/",
-                                    "exp_heads_path": "file_system/unprocessed/"}}                   
+            "exp_unproc": {"identity": {"comp_heads_path": proc_path +"identity/",
+                                    "exp_heads_path": unproc_path},
+                        "generic_detail": {"comp_heads_path": proc_path +"generic_detail/",
+                                    "exp_heads_path": unproc_path},
+                        "individual_detail": {"comp_heads_path": proc_path +"individual_detail/",
+                                    "exp_heads_path": unproc_path},
+                        "no_detail": {"comp_heads_path": proc_path +"no_detail/",
+                                    "exp_heads_path": unproc_path}}                   
             }
 

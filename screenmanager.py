@@ -32,7 +32,7 @@ class DisplayEngine:
         """
         
         self.read_configs()
-        self.set_layout()
+        self.set_layout(flags)
         self.running = True
         self.data_manager = dm.Data_Manager(self)
         self.machine = Machine()
@@ -43,7 +43,7 @@ class DisplayEngine:
         self.image_config = conf.image_conf
 
 
-    def set_layout(self):
+    def set_layout(self, flags):
         self.caption = self.layout_config["caption"]
         pygame.display.set_caption(self.caption)
         self.size_x = self.layout_config["screen_size"][0]
