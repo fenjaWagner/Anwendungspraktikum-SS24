@@ -1,5 +1,6 @@
 import json
 import states
+import pprint
 
 
 class Data_Manager():
@@ -39,31 +40,32 @@ class Data_Manager():
             dict: userdata
         """
         if not new_user_flag:
-            #print("Data - sign in: ", self.data)
             print("Username: ", username)
             if username in self.data.keys():
                 self.user = username
                 self.user_data = self.data[self.user]
-                self.engine.machine.next_state = states.UserModeState(self.engine, (140,140,140))
+                self.engine.machine.next_state = states.UserModeState(self.engine)
 
                 
             else:
-                self.engine.machine.next_state = states.LogInError(self.engine, (140,140,140))
+                self.engine.machine.next_state = states.LogInErrorState2(self.engine)
     
         else:
-            if self.user in self.data.keys():
-                self.engine.machine.next_state = states.ChosenUsernameError(self.engine, (140,140,140))
+            print(self.data.keys())
+            if username in self.data.keys():
+                self.engine.machine.next_state = states.ChosenUsernameErrorState2(self.engine)
             else: 
                 self.user = username
                 self.data[self.user] = self.user_data
                 self.write_data()
-                self.engine.machine.next_state = states.UserModeState(self.engine, (140,140,140))
+                self.engine.machine.next_state = states.UserModeState(self.engine)
     
         
     def write_data(self):
         """Writes new user to datafile.
         """
         with open('user_data.txt', 'w') as user_data_file:
+
             user_data_file.write(json.dumps(self.data))
 
 

@@ -19,7 +19,7 @@ class Machine:
 class DisplayEngine:
     """Holds the screen and updates it depending on the state of the machine.
     """
-    def __init__(self, caption: str, fps, size_x, size_y, font, flags=0):
+    def __init__(self, caption: str, size_x, size_y, font, flags=0):
         """DisplayEngine Init
 
         Args:
@@ -36,11 +36,9 @@ class DisplayEngine:
         self.font = font
         self.surface = pygame.display.set_mode((size_x, size_y), flags)
         self.rect = self.surface.get_rect()
-        #self.clock = pygame.time.Clock()
         self.running = True
-        #self.delta = 0
-        #self.fps = fps
         self.config = conf.conf
+        self.layout_config = conf.conf["layout"]
         self.image_config = conf.image_conf
         self.data_manager = dm.Data_Manager(self)
 
@@ -61,11 +59,9 @@ class DisplayEngine:
                     self.machine.current.on_event(event)
 
             self.machine.current.on_draw(self.surface)
-            self.machine.current.on_update()#self.delta)
-
+            self.machine.current.on_update()
             pygame.display.flip()
-            #self.delta = self.clock.tick(self.fps)
-
+            
     def run(self, state):
         """Starts the first state of the machine.
 

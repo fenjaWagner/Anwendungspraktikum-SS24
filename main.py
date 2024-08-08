@@ -8,8 +8,8 @@ import states
 def main():
     pygame.init()
     font = pygame.font.SysFont(None, 30)
-    engine = sc.DisplayEngine('Example State machine', 60, 1200, 700, font)
-    engine.run(states.StartState(engine, (140,140,140)))
+    engine = sc.DisplayEngine('Example State machine', 900, 400, font)
+    engine.run(states.StartState(engine))
     pygame.quit()
 
 

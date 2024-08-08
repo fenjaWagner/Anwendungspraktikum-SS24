@@ -25,6 +25,7 @@ class TextInputBox(pygame.sprite.Sprite):
         self.width = w
         self.font = font
         self.active = False
+        self.key_return = False
         self.text = ""
         self.render_text()
 
@@ -49,10 +50,12 @@ class TextInputBox(pygame.sprite.Sprite):
         """
 
         if event.type == pygame.MOUSEBUTTONDOWN:
+            self.key_return = False
             self.active = self.rect.collidepoint(event.pos)
         if event.type == pygame.KEYDOWN and self.active:
             if event.key == pygame.K_RETURN:
                 self.active = False
+                self.key_return = True
             elif event.key == pygame.K_BACKSPACE:
                 self.text = self.text[:-1]
             else:
