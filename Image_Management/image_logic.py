@@ -92,14 +92,12 @@ class Image_Loader:
                 pygame.K_4: 4
             }
             if event.key in key_to_index:
-                print(key_to_index[event.key])
                 self.image_manager.verify_and_renew(key_to_index[event.key])
                 self.load_image()
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             for i, rect in enumerate(self.image_rects, start=1):
                 if rect.collidepoint(event.pos):
-                    print(i)
                     self.image_manager.verify_and_renew(i)
                     self.load_image()
                     break
@@ -180,8 +178,6 @@ class Image_Manager:
             pygame.image.load(f"{self.img_path_comp}{img}.jpg").convert()
             for img in test_list
         ]
-
-        print("TestList:", test_list)
     
     def update_image_lists(self):
         """Updates experimental and comparison image lists based on the current mode.
@@ -193,7 +189,6 @@ class Image_Manager:
         """Places the comparison image randomly among the current images.
         """
         self.comp_pic_place = np.random.randint(4)
-        print("place:", self.comp_pic_place +1)
         self.current_images.insert(self.comp_pic_place, self.comp_pic)    
     
     def load_images(self):
@@ -202,7 +197,6 @@ class Image_Manager:
         np.random.seed()
         mode_index = np.random.randint(len(self.game_modes))
         self.mode = self.game_modes[mode_index]
-        print(self.mode)
 
         self.update_image_lists()
         id_index = np.random.randint(len(self.exp_list))
@@ -210,6 +204,13 @@ class Image_Manager:
         self.get_compare_images()
         self.get_random_image_list(self.comp_pic_list)
         self.place_com_img()
+    
+    def print_results(self, correct_detail, out_of_detail, correct_game_mode, out_of_game_mode):
+        print("-"*45)
+        print(f"Mode: {self.mode}")
+        print(f"Statistic: {correct_detail} out of {out_of_detail} in detail mode {self.detail_mode}")
+        print(f"Statistic: {correct_game_mode} out of {out_of_game_mode} in game_mode mode {self.mode}")
+        print("-"*45)
         
     def verify_and_renew(self, picked_img):
         """Verifies the user's choice and updates the image set.
@@ -217,17 +218,22 @@ class Image_Manager:
         Args:
             picked_img (int): Index of the image picked by the user.
         """
-        print("ORder: ", self.order)
-        print(self.user_data)
-        if picked_img -1 == self.comp_pic_place:
-            print("right choice")
-            self.user_data[self.order]['detail_mode'][self.detail_mode]['correct'] += 1
-            self.user_data[self.order]['game_modes'][self.mode]['correct'] +=1
-        else:
-            print("wrong choice")
-        
-        self.user_data[self.order]['detail_mode'][self.detail_mode]['out_of'] += 1
-        self.user_data[self.order]['game_modes'][self.mode]['out_of'] +=1
+        out_of_detail = self.user_data[self.order]['detail_mode'][self.detail_mode]['out_of']
+        out_of_game_mode = self.user_data[self.order]['game_modes'][self.mode]['out_of']
+        #out_of_detail += 1
+        #out_of_game_mode += 1
+        correct_detail = self.user_data[self.order]['detail_mode'][self.detail_mode]['correct'] 
+        correct_game_mode = self.user_data[self.order]['game_modes'][self.mode]['correct']
 
+        self.user_data[self.order]['detail_mode'][self.detail_mode]['out_of'] += 1
+        self.user_data[self.order]['game_modes'][self.mode]['out_of'] += 1
+        
+        if picked_img -1 == self.comp_pic_place:
+            self.user_data[self.order]['detail_mode'][self.detail_mode]['correct'] +=1 
+            self.user_data[self.order]['game_modes'][self.mode]['correct'] +=1          
+            
+        else:
+            self.print_results(correct_detail, out_of_detail, correct_game_mode, out_of_game_mode)
+        
         self.load_images()
 
