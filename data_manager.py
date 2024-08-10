@@ -17,13 +17,16 @@ class Data_Manager():
     def get_default_user_data(self):
         for order in ["exp_proc", "exp_unproc"]:
             self.default_user_data[order] = {"overall": {"correct": 0,
-                                                                        "out_of": 0}}
+                                                        "out_of": 0,
+                                                         "history": []}}
             for detail_mode in self.engine.config["detail_modes"]:
                 self.default_user_data[order][detail_mode] = {"overall": {"correct": 0,
-                                                                        "out_of": 0}}
+                                                                        "out_of": 0,
+                                                                "history": []}}
                 for game_mode in self.engine.config["game_modes"]:
                     self.default_user_data[order][detail_mode][game_mode] = {"correct": 0,
-                                                        "out_of": 0}
+                                                        "out_of": 0,
+                                                        "history":[]}
 
     def read_data(self):
         """Reads data from file.

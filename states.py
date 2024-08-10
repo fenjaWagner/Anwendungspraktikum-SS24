@@ -116,7 +116,7 @@ class UserModeState(State):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.engine.data_manager.write_data()
-                self.eval.plot()
+                self.eval.eval()
                 self.engine.machine.next_state = StartState(self.engine)
 
 
