@@ -17,7 +17,6 @@ class Image_Loader:
         self.engine = engine
         self.background = background
         self.image_manager = Image_Manager(self.engine)
-        self.detail_mode = self.engine.config["detail_mode"]
         self.order = self.engine.config["order"]
 
         self.get_comp_image_size()
@@ -114,25 +113,40 @@ class Image_Manager:
             engine (Display engine): Engine that holds the configuration, image config, and user data.
         """
         self.engine = engine
-        self.detail_mode = self.engine.config["detail_mode"]
+        self.detail_modes = self.engine.config["detail_modes"]
         self.game_modes = self.engine.config["game_modes"]
-        self.order = self.engine.config["order"]
-        self.mode = None
-
         self.item_dict = self.get_image_item_dict()
         self.image_config = self.engine.image_config
-        self.mode = "mixed"
+        
+        self.get_detail_mode()
+        self.get_game_mode()
+        
+        self.order = self.engine.config["order"]
+        
+        
         self.exp_list = self.item_dict[self.image_config["game_modes"][self.mode]['exp_list']]
         self.comp_pic_list = self.item_dict[self.image_config["game_modes"][self.mode]['comp_pic_list']]
         self.identity = self.item_dict['identity_pic']
-        self.img_path_exp = self.image_config[self.order][self.detail_mode]["exp_heads_path"]
-        self.img_path_comp = self.image_config[self.order][self.detail_mode]["comp_heads_path"]
-
+        
         self.id = None
         self.comp_pic_place = None
         self.current_images = []
 
         self.user_data = self.engine.data_manager.user_data
+
+    def get_detail_mode(self):
+        np.random.seed()
+        detail_mode_num = np.random.randint(len(self.detail_modes))
+        self.detail_mode = self.detail_modes[detail_mode_num]
+
+    def get_game_mode(self):
+        np.random.seed()
+        mode_index = np.random.randint(len(self.game_modes))
+        self.mode = self.game_modes[mode_index]
+    
+    def get_img_path(self):
+        self.img_path_exp = self.image_config[self.order][self.detail_mode]["exp_heads_path"]
+        self.img_path_comp = self.image_config[self.order][self.detail_mode]["comp_heads_path"]
 
 
     def get_image_item_dict(self):
@@ -148,6 +162,7 @@ class Image_Manager:
     def get_compare_images(self):
         """Loads the comparison images based on the current identity.
         """
+
         pic_num = np.random.randint(2)
         proc_num = self.identity[self.id][pic_num]
         self.proc_head = pygame.image.load(self.img_path_exp + proc_num+".jpg").convert()
@@ -195,8 +210,9 @@ class Image_Manager:
         """Loads a new set of images for comparison.
         """
         np.random.seed()
-        mode_index = np.random.randint(len(self.game_modes))
-        self.mode = self.game_modes[mode_index]
+        self.get_game_mode()
+        self.get_detail_mode()
+        self.get_img_path()
 
         self.update_image_lists()
         id_index = np.random.randint(len(self.exp_list))
@@ -228,7 +244,9 @@ class Image_Manager:
         
         if picked_img -1 == self.comp_pic_place:
             self.user_data[self.order]['detail_mode'][self.detail_mode]['correct'] +=1 
-            self.user_data[self.order]['game_modes'][self.mode]['correct'] +=1          
+            self.user_data[self.order]['game_modes'][self.mode]['correct'] +=1    
+            self.print_results(correct_detail, out_of_detail, correct_game_mode, out_of_game_mode)
+              
             
         else:
             self.print_results(correct_detail, out_of_detail, correct_game_mode, out_of_game_mode)
