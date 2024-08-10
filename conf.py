@@ -1,8 +1,9 @@
 import pygame
 # detail modes: "generic_detail" (Detail of the dummy head)
 #               "individual_detail" (Detail of the expression individual)
-#               "no_detail" (coarse head shapes)
-#               "identity" (Reconstruction of the whole face without expression transfer)
+#               "coarse" (coarse head shapes)
+#               "complete_identity_coarse" (Reconstruction of the whole face without expression transfer)
+#               "complete_identity_detail" (Reconstruction of the whole face without expression transfer with details)
 # game_modes:   "mixed" (random pictures)
 #               "poc_only" (only pictures of poc)
 #               "non_poc_only" (only picture of non_poc people)
@@ -16,7 +17,7 @@ pygame.init()
 proc_path = "file_system/processed/"
 unproc_path = "file_system/unprocessed/"
 
-conf = {"detail_mode": "generic_detail",
+conf = {"detail_mode": "complete_identity_coarse",
         "order": "exp_proc", # or exp_unproc
         "game_modes": ["mixed", 
                    "poc_between_non_pocs", 
@@ -60,8 +61,12 @@ image_conf = {"mixed": {"exp_list": 'identity_all',
                                     "comp_heads_path": unproc_path},
                         "individual_detail": {"exp_heads_path": proc_path +"individual_detail/",
                                     "comp_heads_path": unproc_path},
-                        "no_detail": {"exp_heads_path": proc_path +"no_detail/",
+                        "coarse": {"exp_heads_path": proc_path +"coarse/",
                                     "comp_heads_path": unproc_path}},
+                        "complete_identity_coarse": {"exp_heads_path": proc_path +"complete_identity_coarse",
+                                    "comp_heads_path": unproc_path},
+                        "complete_identity_detail": {"exp_heads_path": proc_path +"complete_identity_detail",
+                                    "comp_heads_path": unproc_path},
             
             "exp_unproc": {"identity": {"comp_heads_path": proc_path +"identity/",
                                     "exp_heads_path": unproc_path},
@@ -69,7 +74,11 @@ image_conf = {"mixed": {"exp_list": 'identity_all',
                                     "exp_heads_path": unproc_path},
                         "individual_detail": {"comp_heads_path": proc_path +"individual_detail/",
                                     "exp_heads_path": unproc_path},
-                        "no_detail": {"comp_heads_path": proc_path +"no_detail/",
-                                    "exp_heads_path": unproc_path}}                   
+                        "coarse": {"comp_heads_path": proc_path +"coarse/",
+                                    "exp_heads_path": unproc_path}},      
+                        "complete_identity_coarse": {"comp_heads_path": proc_path +"complete_identity_coarse/",
+                                    "exp_heads_path": unproc_path},  
+                        "complete_identity_detail": {"comp_heads_path": proc_path +"complete_identity_detail/",
+                                    "exp_heads_path": unproc_path}           
             }
 
