@@ -1,7 +1,7 @@
 import pygame
 import json
 import numpy as np
-from pprint import pprint
+import evaluation.data_evaluation as eval
 
 
 class Image_Loader:
@@ -134,6 +134,7 @@ class Image_Manager:
 
         self.user_data = self.engine.data_manager.user_data
 
+
     def get_detail_mode(self):
         np.random.seed()
         detail_mode_num = np.random.randint(len(self.detail_modes))
@@ -223,6 +224,7 @@ class Image_Manager:
     
     def print_results(self, correct_detail, out_of_detail, correct_game_mode, out_of_game_mode):
         print("-"*45)
+        print(f"Detail Mode: {self.detail_mode}")
         print(f"Mode: {self.mode}")
         print(f"Statistic: {correct_detail} out of {out_of_detail} in detail mode {self.detail_mode}")
         print(f"Statistic: {correct_game_mode} out of {out_of_game_mode} in game_mode mode {self.mode}")
@@ -234,22 +236,27 @@ class Image_Manager:
         Args:
             picked_img (int): Index of the image picked by the user.
         """
-        out_of_detail = self.user_data[self.order]['detail_mode'][self.detail_mode]['out_of']
-        out_of_game_mode = self.user_data[self.order]['game_modes'][self.mode]['out_of']
-        correct_detail = self.user_data[self.order]['detail_mode'][self.detail_mode]['correct'] 
-        correct_game_mode = self.user_data[self.order]['game_modes'][self.mode]['correct']
-
-        self.user_data[self.order]['detail_mode'][self.detail_mode]['out_of'] += 1
-        self.user_data[self.order]['game_modes'][self.mode]['out_of'] += 1
+        self.user_data[self.order]['overall']['out_of'] += 1 #out_of_overall
+        out_of_overall = self.user_data[self.order]['overall']['out_of']
+        self.user_data[self.order][self.detail_mode]['overall']["out_of"] +=1 #out_of_detail += 1
+        out_of_detail = self.user_data[self.order][self.detail_mode]['overall']["out_of"]
+        self.user_data[self.order][self.detail_mode][self.mode]['out_of'] += 1 #out_of_game_mode += 1
+        out_of_game_mode = self.user_data[self.order][self.detail_mode][self.mode]['out_of']
         
         if picked_img -1 == self.comp_pic_place:
-            self.user_data[self.order]['detail_mode'][self.detail_mode]['correct'] +=1 
-            self.user_data[self.order]['game_modes'][self.mode]['correct'] +=1    
+            self.user_data[self.order]['overall']['correct'] += 1 #correct_overall += 1
+            correct_of_overall = self.user_data[self.order]['overall']['correct'] 
+            self.user_data[self.order][self.detail_mode]['overall']['correct'] += 1 #correct_detail +=1
+            correct_detail = self.user_data[self.order][self.detail_mode]['overall']['correct'] 
+            self.user_data[self.order][self.detail_mode][self.mode]['correct'] += 1 #correct_game_mode +=1
+            correct_game_mode = self.user_data[self.order][self.detail_mode][self.mode]['correct']
+                
             self.print_results(correct_detail, out_of_detail, correct_game_mode, out_of_game_mode)
               
             
         else:
+            correct_detail = self.user_data[self.order][self.detail_mode]['overall']['correct'] 
+            correct_game_mode = self.user_data[self.order][self.detail_mode][self.mode]['correct']
             self.print_results(correct_detail, out_of_detail, correct_game_mode, out_of_game_mode)
-        
         self.load_images()
 

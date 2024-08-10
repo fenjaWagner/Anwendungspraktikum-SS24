@@ -11,36 +11,19 @@ class Data_Manager():
         self.engine = engine
         self.user = None
         self.data = self.read_data()
-        self.default_user_data = {  "exp_proc": {"detail_mode":{"generic_detail":{"correct": 0,
-                                                           "out_of": 0},
-                                                        "individual_detail":{"correct": 0,
-                                                                        "out_of": 0},
-                                                        "coarse":{"correct": 0,
-                                                                        "out_of": 0},
-                                                        "complete_identity_coarse":{"correct": 0,
-                                                                        "out_of": 0},
-                                                        "complete_identity_detail":{"correct": 0,
-                                                                        "out_of": 0}},
-                                        "game_modes":{  }},
-                            "exp_unproc": {"detail_mode":{"generic_detail":{"correct": 0,
-                                                           "out_of": 0},
-                                                        "individual_detail":{"correct": 0,
-                                                                        "out_of": 0},
-                                                        "coarse":{"correct": 0,
-                                                                        "out_of": 0},
-                                                        "complete_identity_coarse":{"correct": 0,
-                                                                        "out_of": 0},
-                                                        "complete_identity_detail":{"correct": 0,
-                                                                        "out_of": 0}},
-                                        "game_modes":{  }}
-                            }
+        self.default_user_data = {}
+        self.get_default_user_data()
+        
+    def get_default_user_data(self):
         for order in ["exp_proc", "exp_unproc"]:
-            for mode in self.engine.image_config["exp_proc"].keys():
-                self.default_user_data[order][mode] = {"correct": 0,
-                                                    "out_of": 0}
-            for mode in (self.engine.image_config["game_modes"].keys()):
-                self.default_user_data[order]['game_modes'][mode] = {"correct": 0,
-                                                    "out_of": 0}
+            self.default_user_data[order] = {"overall": {"correct": 0,
+                                                                        "out_of": 0}}
+            for detail_mode in self.engine.config["detail_modes"]:
+                self.default_user_data[order][detail_mode] = {"overall": {"correct": 0,
+                                                                        "out_of": 0}}
+                for game_mode in self.engine.config["game_modes"]:
+                    self.default_user_data[order][detail_mode][game_mode] = {"correct": 0,
+                                                        "out_of": 0}
 
     def read_data(self):
         """Reads data from file.

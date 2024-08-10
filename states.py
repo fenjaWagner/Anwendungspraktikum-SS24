@@ -1,8 +1,7 @@
 import pygame
 import input_management.text_input_box as in_box
 import Image_Management.image_logic as im
-from input_management.buttons import Button
-
+import evaluation.data_evaluation as eval
 class State:
     """Interface for the states.
     """
@@ -95,6 +94,7 @@ class UserModeState(State):
         self.background = self.engine.layout_config["background_color"]
         self.group = pygame.sprite.Group()
         self.image_loader = im.Image_Loader(self.engine, self.background)
+        self.eval = eval.DataEvaluation(self.engine)
         
     def on_draw(self, surface):
         """Draws the images on the given surface.
@@ -116,6 +116,7 @@ class UserModeState(State):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.engine.data_manager.write_data()
+                self.eval.plot()
                 self.engine.machine.next_state = StartState(self.engine)
 
 
