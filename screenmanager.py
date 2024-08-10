@@ -1,6 +1,7 @@
 import pygame
 import data_manager as dm
 import conf
+from pprint import pprint
 
 class Machine:
     """Holds the current state of the screen.
@@ -40,8 +41,9 @@ class DisplayEngine:
     def read_configs(self):
         self.config = conf.conf
         self.layout_config = conf.conf["layout"]
+        self.image_config = {}
         self.image_config = conf.image_conf
-
+        
 
     def set_layout(self, flags):
         self.caption = self.layout_config["caption"]

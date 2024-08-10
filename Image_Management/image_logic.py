@@ -1,6 +1,7 @@
 import pygame
 import json
 import numpy as np
+from pprint import pprint
 
 
 class Image_Loader:
@@ -121,12 +122,11 @@ class Image_Manager:
         self.item_dict = self.get_image_item_dict()
         self.image_config = self.engine.image_config
         self.mode = "mixed"
-        self.exp_list = self.item_dict[self.image_config[self.mode]['exp_list']]
-        self.comp_pic_list = self.item_dict[self.image_config[self.mode]['comp_pic_list']]
+        self.exp_list = self.item_dict[self.image_config["game_modes"][self.mode]['exp_list']]
+        self.comp_pic_list = self.item_dict[self.image_config["game_modes"][self.mode]['comp_pic_list']]
         self.identity = self.item_dict['identity_pic']
-
-        self.img_path_exp = self.engine.image_config[self.order][self.detail_mode]["exp_heads_path"]
-        self.img_path_comp = self.engine.image_config[self.order][self.detail_mode]["comp_heads_path"]
+        self.img_path_exp = self.image_config[self.order][self.detail_mode]["exp_heads_path"]
+        self.img_path_comp = self.image_config[self.order][self.detail_mode]["comp_heads_path"]
 
         self.id = None
         self.comp_pic_place = None
@@ -182,8 +182,8 @@ class Image_Manager:
     def update_image_lists(self):
         """Updates experimental and comparison image lists based on the current mode.
         """
-        self.exp_list = self.item_dict[self.image_config[self.mode]['exp_list']]
-        self.comp_pic_list = self.item_dict[self.image_config[self.mode]['comp_pic_list']]
+        self.exp_list = self.item_dict[self.image_config["game_modes"][self.mode]['exp_list']]
+        self.comp_pic_list = self.item_dict[self.image_config["game_modes"][self.mode]['comp_pic_list']]
 
     def place_com_img(self):
         """Places the comparison image randomly among the current images.
@@ -220,8 +220,6 @@ class Image_Manager:
         """
         out_of_detail = self.user_data[self.order]['detail_mode'][self.detail_mode]['out_of']
         out_of_game_mode = self.user_data[self.order]['game_modes'][self.mode]['out_of']
-        #out_of_detail += 1
-        #out_of_game_mode += 1
         correct_detail = self.user_data[self.order]['detail_mode'][self.detail_mode]['correct'] 
         correct_game_mode = self.user_data[self.order]['game_modes'][self.mode]['correct']
 

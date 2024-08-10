@@ -15,23 +15,30 @@ class Data_Manager():
                                                            "out_of": 0},
                                                         "individual_detail":{"correct": 0,
                                                                         "out_of": 0},
-                                                        "no_detail":{"correct": 0,
+                                                        "coarse":{"correct": 0,
                                                                         "out_of": 0},
-                                                        "identity":{"correct": 0,
+                                                        "complete_identity_coarse":{"correct": 0,
+                                                                        "out_of": 0},
+                                                        "complete_identity_detail":{"correct": 0,
                                                                         "out_of": 0}},
                                         "game_modes":{  }},
                             "exp_unproc": {"detail_mode":{"generic_detail":{"correct": 0,
                                                            "out_of": 0},
                                                         "individual_detail":{"correct": 0,
                                                                         "out_of": 0},
-                                                        "no_detail":{"correct": 0,
+                                                        "coarse":{"correct": 0,
                                                                         "out_of": 0},
-                                                        "identity":{"correct": 0,
+                                                        "complete_identity_coarse":{"correct": 0,
+                                                                        "out_of": 0},
+                                                        "complete_identity_detail":{"correct": 0,
                                                                         "out_of": 0}},
                                         "game_modes":{  }}
                             }
         for order in ["exp_proc", "exp_unproc"]:
-            for mode in (self.engine.image_config.keys()):
+            for mode in self.engine.image_config["exp_proc"].keys():
+                self.default_user_data[order][mode] = {"correct": 0,
+                                                    "out_of": 0}
+            for mode in (self.engine.image_config["game_modes"].keys()):
                 self.default_user_data[order]['game_modes'][mode] = {"correct": 0,
                                                     "out_of": 0}
 
