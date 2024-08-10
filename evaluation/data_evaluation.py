@@ -38,11 +38,13 @@ class DataEvaluation:
         max_value = max(percentage)       
         fig, ax = plt.subplots()
 
+        ax.axhline(y=25, color='r', linestyle='--')
+
         ax.bar(self.detail_modes, percentage, label=self.detail_modes)
         ax.set_ylabel('Percentage')
         ax.set_title('Percentage of correct answers per game mode of user '+ user)
         ax.set_xticklabels(self.detail_modes, rotation=45, ha='right')  # Rotate the labels by 45 degrees
-        ax.set_ylim(0, max_value + 5)
+        ax.set_ylim(0, max(max_value, 25) + 5)
         plt.savefig("evaluation/"+user+".png", format="png", dpi=300, bbox_inches="tight")
 
     def eval(self):
