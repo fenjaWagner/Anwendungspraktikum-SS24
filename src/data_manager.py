@@ -73,7 +73,7 @@ class Data_Manager():
         with open('data/user_data.txt', 'w') as user_data_file:
             user_data_file.write(json.dumps(self.data))
 
-        with open('data/readable_data.txt', 'w') as user_data_file:
+        with open('../result_data/readable_data.txt', 'w') as user_data_file:
             pprint.pprint(self.data, stream = user_data_file)
 
             

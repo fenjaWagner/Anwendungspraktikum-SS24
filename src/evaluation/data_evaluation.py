@@ -75,12 +75,12 @@ class DataEvaluation:
         ax.set_title('Percentage of correct answers per game mode of user '+ user)
         ax.set_xticklabels(self.detail_modes, rotation=45, ha='right')  # Rotate the labels by 45 degrees
         ax.set_ylim(0, max(max_value, 25) + 5)
-        plt.savefig("evaluation/"+user+".png", format="png", dpi=300, bbox_inches="tight")
+        plt.savefig("../result_data/plots/"+user+".png", format="png", dpi=300, bbox_inches="tight")
 
     def print_csv(self):
         """Prints the data dictionary into a csv file.
         """
-        csv_file = open("evaluation/data.csv", "w")
+        csv_file = open("../result_data/data.csv", "w")
         for user in self.data.keys():
             for order in ["exp_proc", "exp_unproc"]:
                 for detail in self.detail_modes:
