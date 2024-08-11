@@ -3,15 +3,15 @@ import json
 import input_management.text_input_box as in_box
 import Image_Management.image_logic as im
 import evaluation.data_evaluation as eval
+
 class State:
     """Interface for the states.
     """
     def __init__(self, engine):
         self.engine = engine
 
-    def on_draw(self, surface) -> None: pass
-    def on_event(self, event) -> None: pass
-    def on_update(self): pass
+    def on_draw(self, surface) -> None: pass # implements what should be drawn on the screen
+    def on_event(self, event) -> None: pass # implements what should happen, when the user does certain things
 
 class StartState(State):
     """State that manages the Login.

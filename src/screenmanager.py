@@ -1,3 +1,16 @@
+# 
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+
 import pygame
 import data_manager as dm
 import evaluation.data_evaluation as eval
@@ -56,7 +69,6 @@ class DisplayEngine:
         self.surface = pygame.display.set_mode((self.size_x, self.size_y), flags)
         self.rect = self.surface.get_rect()
         
-
     def loop(self):
         """Updates the screen.
         """
@@ -72,7 +84,6 @@ class DisplayEngine:
                     self.machine.current.on_event(event)
 
             self.machine.current.on_draw(self.surface)
-            self.machine.current.on_update()
             pygame.display.flip()
             
     def run(self, state):
