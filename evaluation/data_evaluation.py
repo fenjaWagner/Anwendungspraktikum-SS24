@@ -25,6 +25,8 @@ class DataEvaluation:
         Returns:
             list, list: Lists with the total and correct number of choices.
         """
+        if not user:
+            return None, None
         out_of = []
         correct = []
         for mode in self.detail_modes:
@@ -58,6 +60,9 @@ class DataEvaluation:
             out_of (list): List of total number of choices per game mode.
             user (str): Username.
         """
+        if not correct:
+            print("No username.")
+            return
         percentage = [(c / o * 100) if o != 0 else 0 for c, o in zip(correct, out_of)]
         print(f"percentage of {user} ", percentage)
         max_value = max(percentage)       
