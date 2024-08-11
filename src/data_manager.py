@@ -10,11 +10,13 @@ class Data_Manager():
     def __init__(self, engine) -> None:
         self.engine = engine
         self.user = None
-        self.data = self.read_data()
+        self.data = self.read_data() # Reads in the data of all users.
         self.default_user_data = {}
         self.get_default_user_data()
         
     def get_default_user_data(self):
+        """Generates the dictionary for one user that is stored in the data dictionary.
+        """
         for order in ["exp_proc", "exp_unproc"]:
             self.default_user_data[order] = {"overall": {"correct": 0,
                                                         "out_of": 0,
@@ -44,25 +46,22 @@ class Data_Manager():
         Returns:
             dict: userdata
         """
-        if not new_user_flag:
-            print("Username: ", username)
+        if not new_user_flag: # Login process
             if username in self.data.keys():
                 self.user = username
                 self.user_data = self.data[self.user]
-                return states.InstructionState(self.engine)
-                
+                return states.InstructionState(self.engine)        
                 
             else:
                 return states.LogInErrorState2(self.engine)
     
-        else:
-            print(self.data.keys())
+        else: # A new user signs up.
             if username in self.data.keys():
                 return states.ChosenUsernameErrorState2(self.engine)
             else: 
                 self.user = username
-                self.user_data = copy.deepcopy(self.default_user_data)
-                self.data[self.user] = self.user_data
+                self.user_data = copy.deepcopy(self.default_user_data) # Create a new user data dictionary.
+                self.data[self.user] = self.user_data # Store it in the data dictionary.
                 self.write_data()
                 return states.InstructionState(self.engine)
     

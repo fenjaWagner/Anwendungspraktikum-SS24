@@ -1,6 +1,4 @@
 import pygame
-import json
-
 
 class TextInputBox(pygame.sprite.Sprite):
     """Displays a textinputbox at given coordinates.
@@ -35,7 +33,8 @@ class TextInputBox(pygame.sprite.Sprite):
         t_surf = self.font.render(self.text, True, self.color, self.backcolor)
         self.image = pygame.Surface((max(self.width, t_surf.get_width()+10), t_surf.get_height()+10), pygame.SRCALPHA)
         self.image.fill(self.backcolor)
-        if self.active:
+
+        if self.active: # Changes color when active.
             pygame.draw.rect(self.image, self.color_active, self.image.get_rect().inflate(-2, -2), 2)
         else:
             pygame.draw.rect(self.image, self.color, self.image.get_rect().inflate(-2, -2), 2)
@@ -51,7 +50,7 @@ class TextInputBox(pygame.sprite.Sprite):
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.key_return = False
-            self.active = self.rect.collidepoint(event.pos)
+            self.active = self.rect.collidepoint(event.pos) # Detects when the user clicks on the input box.
         if event.type == pygame.KEYDOWN and self.active:
             if event.key == pygame.K_RETURN:
                 self.active = False
@@ -64,32 +63,7 @@ class TextInputBox(pygame.sprite.Sprite):
             
 
 
-class Write_Data_Manager():
-    """Handles new users.
-    """
-        # TODO: Handling doppelter Nutzername!
-    def __init__(self) -> None:
-        self.user = None
-        self.data = self.read_data()
-        self.user_data = None
 
-    def read_data(self):
-        """Reads data from file.
-
-        Returns:
-            dict: data from all users
-        """
-        with open('user_data.txt', 'r') as user_data_file:
-            dict = json.loads(user_data_file.read())
-        
-        return dict
-    
-    def write_data(self):
-        """Writes new user to datafile.
-        """
-        self.data[self.user] = self.user_data
-        with open('user_data.txt', 'w') as user_data_file:
-            user_data_file.write(json.dumps(self.data))
 
     
 

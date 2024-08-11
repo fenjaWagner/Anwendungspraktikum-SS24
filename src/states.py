@@ -29,31 +29,36 @@ class StartState(State):
         self.init_input_boxes()
 
     def init_texts(self):
-        """Initializes the static text objects."""
-        self.user_text = self.engine.font.render("If you already have a username, sign in with your username here: ", False, 0, self.background)
-        self.new_user_text = self.engine.font.render("If you are a new user, choose a username here:", False, 0, self.background)
+        """Initializes the static text objects.
+        """
+        # Creates objects that hold the text and can be displayed.
+        self.user_text = self.engine.font.render("If you already have a username, sign in with your username here: ", 
+                                                 False, 0, self.background)
+        self.new_user_text = self.engine.font.render("If you are a new user, choose a username here:", 
+                                                     False, 0, self.background)
 
     def init_input_boxes(self):
         """Initializes input boxes."""
-        self.group = pygame.sprite.Group()
+        self.group = pygame.sprite.Group() # here, the objects are managed via a Sprite group
         self.user_input = in_box.TextInputBox(20, self.engine.size_y * 5 // 15, self.engine.size_x - 40, self.engine.font)
         self.new_user_input = in_box.TextInputBox(20, self.engine.size_y * 11 // 15, self.engine.size_x - 40, self.engine.font)
         self.group.add(self.user_input, self.new_user_input)
         
-
     def handle_user_input(self):
         """Handles user input for login or sign-up.
         """
+        # When the user presses enter the username is passed to the data manager.
+        # The new_user_flag states wether its a login or a new user.
         if self.new_user_input.key_return and self.new_user_input.text:
+            # Set the next state to the returned State from the data manager.
             self.engine.machine.next_state  = self.engine.data_manager.sign_up(self.new_user_input.text, new_user_flag = 1)
             self.user_input.text = ''
             
         elif self.user_input.key_return and self.user_input.text:
+            # Set the next state to the returned State from the data manager.
             self.engine.machine.next_state = self.engine.data_manager.sign_up(self.user_input.text, new_user_flag = 0)
             self.user_input.text = ''
 
-
-  
     def on_draw(self, surface):
         """Draws the current objects on the given surface.
 
@@ -62,7 +67,7 @@ class StartState(State):
         """
         surface.fill(self.background)
         self.group.draw(surface)
-        surface.blit(self.user_text, (20, self.engine.size_y*3 // 15))
+        surface.blit(self.user_text, (20, self.engine.size_y*3 // 15)) # display the text objects
         surface.blit(self.new_user_text, (20, self.engine.size_y *9// 15))
 
     def on_event(self, event):
@@ -71,7 +76,7 @@ class StartState(State):
         Args:
             event (pygame.event): Event that is invoked by the user.
         """
-        self.group.update(event)
+        self.group.update(event) # Updates all objects in the group with the event.
         self.handle_user_input()
 
 
@@ -92,7 +97,11 @@ class UserModeState(State):
         self.engine = engine
         self.background = self.engine.layout_config["background_color"]
         self.group = pygame.sprite.Group()
-        self.image_loader = im.Image_Loader(self.engine, self.background)
+
+        # Manages the loading, displaying of the images and the user input
+        self.image_loader = im.Image_Loader(self.engine, self.background) 
+
+        # Manages the evaluation of the user data once the user quits the game.
         self.eval = eval.DataEvaluation(self.engine)
         
     def on_draw(self, surface):
@@ -114,9 +123,9 @@ class UserModeState(State):
         self.image_loader.on_event(event)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                self.engine.data_manager.write_data()
-                self.eval.eval()
-                self.engine.machine.next_state = UserEvalState(self.engine)
+                self.engine.data_manager.write_data() # Write the data so it can be evaluated.
+                self.eval.eval() # Evaluate the data.
+                self.engine.machine.next_state = UserEvalState(self.engine) # Goes on to the UserEvalState.
 
 class InstructionState(State):
     """State that displays the instruction to the user.
@@ -149,8 +158,11 @@ class InstructionState(State):
         Args:
             surface (pygame.Surface): Surface on which the instruction text should be displayed.
         """
-        y_pos = self.engine.size_y // 6
+        # Scaling of the positions depending on screen size.
+        y_pos = self.engine.size_y // 6  
         x_pos = self.engine.size_x // 6
+
+        # Render all the text lines.
         for x in range(len(self.text_list)):
             rendered = self.font.render(self.text_list[x], 0, 0)
             surface.blit(rendered, (x_pos, y_pos))
@@ -173,9 +185,9 @@ class InstructionState(State):
         """
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                self.engine.machine.next_state = UserModeState(self.engine)
+                self.engine.machine.next_state = UserModeState(self.engine) # Goes on to the UserModeState
             elif event.key == pygame.K_ESCAPE:
-                self.engine.machine.next_state = StartState(self.engine)              
+                self.engine.machine.next_state = StartState(self.engine) # Returns to the StartState.          
         
 
 class UserEvalState(State):
@@ -199,10 +211,14 @@ class UserEvalState(State):
         self.scale_plots()
         
     def load_plots(self):
+        """Loads the plot images.
+        """
         self.plots = [ pygame.image.load(f"../result_data/plots/{self.username}.png").convert(),
                       pygame.image.load(f"../result_data/plots/overall.png").convert()]
 
     def scale_plots(self):
+        """Scales the size of the plot images depending on the screen size.
+        """
         self.x_middle = self.engine.size_x // 2        
         self.size = min(self.x_middle, self.engine.size_y) //16
         self.image_size = self.size * 13
@@ -214,7 +230,7 @@ class UserEvalState(State):
         Args:
             surface (pygame.Surface): Surface on which the plots should be displayed.
         """
-        x_spacing = [-self.size* 14, self.size]
+        x_spacing = [-self.size* 14, self.size] # Scaling of the position.
         for i, img in enumerate(self.plots):
             x_position = self.x_middle + x_spacing[i]
             y_position = 2* self.size
@@ -247,7 +263,7 @@ class UserEvalState(State):
             event (pygame.event): Event that is invoked by the user.
         """
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            self.engine.machine.next_state = StartState(self.engine)
+            self.engine.machine.next_state = StartState(self.engine) # Returns to the StartState.
 
             
 

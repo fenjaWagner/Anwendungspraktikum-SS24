@@ -1,4 +1,3 @@
-import pygame
 # detail modes: "generic_detail" (Detail of the dummy head)
 #               "individual_detail" (Detail of the expression individual)
 #               "coarse" (coarse head shapes)
@@ -18,6 +17,8 @@ proc_path = "file_system/processed/"
 unproc_path = "file_system/unprocessed/"
 
 conf = {"detail_modes": ["generic_detail", "individual_detail", "coarse", "complete_identity_coarse", "complete_identity_detail"],
+        # The order states whether the user is given a processed image and has to choose 
+        # from unprocessed pictures or vice versa.
         "order": "exp_unproc", # or exp_unproc
         "game_modes": ["mixed", 
                    "poc_between_non_pocs", 
@@ -29,13 +30,16 @@ conf = {"detail_modes": ["generic_detail", "individual_detail", "coarse", "compl
         "layout": {"caption": "Fancy Name",
                     "screen_size": (1400, 750),
                     "font": "arial",
-                    "original_image_size": (178, 218),
-                   "processed_image_size": (224,224),
-                   "background_color": (140,140,140)
+                    "original_image_size": (178, 218), # for scaling
+                   "processed_image_size": (224,224), # for scaling
+                   "background_color": (140,140,140) # colour tuple
                    }
 }
 
-image_conf = {"game_modes": {"mixed": {"exp_list": 'identity_all',
+image_conf = {
+                # States what lists in image_item.txt will be used for loading 
+                # the images in the respective game mode.
+                "game_modes": {"mixed": {"exp_list": 'identity_all',
                                 "comp_pic_list": 'identity_all'}, 
                         "poc_between_non_pocs": {"exp_list": "poc",
                                                 "comp_pic_list": "non_poc"}, 
@@ -55,7 +59,9 @@ image_conf = {"game_modes": {"mixed": {"exp_list": 'identity_all',
                         "male_between_females": {"exp_list": "male",
                                                 "comp_pic_list": "female"}},
 
-            "exp_proc": {"identity": {"exp_heads_path": proc_path +"identity/",
+                # Stores the paths to the processed images depending on the current game mode and order.
+                # If one modifies the file_system structure, the changes need to be applied here.
+                "exp_proc": {"identity": {"exp_heads_path": proc_path +"identity/",
                                     "comp_heads_path": unproc_path},
                         "generic_detail": {"exp_heads_path": proc_path +"generic_detail/",
                                     "comp_heads_path": unproc_path},

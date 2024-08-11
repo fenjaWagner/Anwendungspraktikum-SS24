@@ -50,7 +50,6 @@ class DataEvaluation:
             correct_all = [c + u for c, u in zip(correct_all, user_correct)]
             out_of_all = [o + u for o, u in zip(out_of_all, user_out_of)]
         return correct_all, out_of_all
-
     
     def plot(self, correct, out_of, user):
         """Plots the data given in correct_out list and out_of list.
@@ -68,7 +67,7 @@ class DataEvaluation:
         max_value = max(percentage)       
         fig, ax = plt.subplots()
 
-        ax.axhline(y=25, color='r', linestyle='--')
+        ax.axhline(y=25, color='r', linestyle='--') # Add a line at 25% (for comparison to random choice).
 
         ax.bar(self.detail_modes, percentage, label=self.detail_modes)
         ax.set_ylabel('Percentage')
@@ -95,7 +94,6 @@ class DataEvaluation:
 
                         csv_file.write(string + str(out_of) + ", " +str(percentage) + "\n")
         csv_file.close()
-
 
     def eval(self):
         """Invokes collecting, plotting and printing of the data.
