@@ -45,13 +45,13 @@ class StartState(State):
         """Handles user input for login or sign-up.
         """
         if self.new_user_input.key_return and self.new_user_input.text:
-            self.engine.data_manager.sign_up(self.new_user_input.text, new_user_flag = 1)
+            self.engine.machine.next_state  = self.engine.data_manager.sign_up(self.new_user_input.text, new_user_flag = 1)
             self.user_input.text = ''
-
-
+            
         elif self.user_input.key_return and self.user_input.text:
-            self.engine.data_manager.sign_up(self.user_input.text, new_user_flag = 0)
+            self.engine.machine.next_state = self.engine.data_manager.sign_up(self.user_input.text, new_user_flag = 0)
             self.user_input.text = ''
+
 
   
     def on_draw(self, surface):
@@ -199,8 +199,8 @@ class UserEvalState(State):
         self.scale_plots()
         
     def load_plots(self):
-        self.plots = [ pygame.image.load(f"evaluation/{self.username}.png").convert(),
-                      pygame.image.load(f"evaluation/overall.png").convert()]
+        self.plots = [ pygame.image.load(f"../result_data/plots/{self.username}.png").convert(),
+                      pygame.image.load(f"../result_data/plots/overall.png").convert()]
 
     def scale_plots(self):
         self.x_middle = self.engine.size_x // 2        

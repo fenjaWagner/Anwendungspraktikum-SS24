@@ -49,22 +49,22 @@ class Data_Manager():
             if username in self.data.keys():
                 self.user = username
                 self.user_data = self.data[self.user]
-                self.engine.machine.next_state = states.InstructionState(self.engine)
-
+                return states.InstructionState(self.engine)
+                
                 
             else:
-                self.engine.machine.next_state = states.LogInErrorState2(self.engine)
+                return states.LogInErrorState2(self.engine)
     
         else:
             print(self.data.keys())
             if username in self.data.keys():
-                self.engine.machine.next_state = states.ChosenUsernameErrorState2(self.engine)
+                return states.ChosenUsernameErrorState2(self.engine)
             else: 
                 self.user = username
                 self.user_data = copy.deepcopy(self.default_user_data)
                 self.data[self.user] = self.user_data
                 self.write_data()
-                self.engine.machine.next_state = states.UserModeState(self.engine)
+                return states.InstructionState(self.engine)
     
         
     def write_data(self):
