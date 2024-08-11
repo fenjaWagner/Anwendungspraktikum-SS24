@@ -47,8 +47,26 @@ class DataEvaluation:
         ax.set_ylim(0, max(max_value, 25) + 5)
         plt.savefig("evaluation/"+user+".png", format="png", dpi=300, bbox_inches="tight")
 
+    def print_csv(self):
+        csv_file = open("evaluation/data.csv", "w")
+        for user in self.data.keys():
+            for order in ["exp_proc", "exp_unproc"]:
+                for detail in self.detail_modes:
+                    for mode in self.engine.config["game_modes"]:
+                        string = user + ", " + order +", " + detail + ", " + mode + ", "
+                        out_of = self.data[user][order][detail][mode]["out_of"]
+                        correct = self.data[user][order][detail][mode]["correct"]
+                        if out_of != 0:
+                            percentage = (correct/out_of) * 100
+                        else: 
+                            percentage = 0
+
+                        csv_file.write(string + str(out_of) + ", " +str(percentage) + "\n")
+
+
     def eval(self):
         user_c, user_o = self.get_current_user_data(self.username)
         self.plot( user_c, user_o, self.username)
         all_c, all_o = self.get_overall_data()
         self.plot(all_c, all_o, "overall")
+        self.print_csv()

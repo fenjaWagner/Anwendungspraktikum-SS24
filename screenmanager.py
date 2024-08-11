@@ -1,7 +1,9 @@
 import pygame
 import data_manager as dm
+import evaluation.data_evaluation as eval
 import conf
 from pprint import pprint
+
 
 class Machine:
     """Holds the current state of the screen.
@@ -37,6 +39,7 @@ class DisplayEngine:
         self.running = True
         self.data_manager = dm.Data_Manager(self)
         self.machine = Machine()
+        self.eval = eval.DataEvaluation(self)
 
     def read_configs(self):
         self.config = conf.conf
@@ -63,6 +66,7 @@ class DisplayEngine:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.data_manager.write_data()
+                    self.eval.eval()
                     self.running = False
 
                 else:
