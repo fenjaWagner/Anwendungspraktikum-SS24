@@ -18,7 +18,7 @@ proc_path = "file_system/processed/"
 unproc_path = "file_system/unprocessed/"
 
 conf = {"detail_modes": ["generic_detail", "individual_detail", "coarse", "complete_identity_coarse", "complete_identity_detail"],
-        "order": "exp_proc", # or exp_unproc
+        "order": "exp_unproc", # or exp_unproc
         "game_modes": ["mixed", 
                    "poc_between_non_pocs", 
                    "non_poc_between_pocs", 

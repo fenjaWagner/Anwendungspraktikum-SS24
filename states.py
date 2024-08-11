@@ -20,7 +20,6 @@ class StartState(State):
 
         Args:
             engine (Display engine): Engine that holds the configuration, image config, and user data.
-            background (tuple): Background color (R, G, B).
         """
         super().__init__(engine)
         self.engine = engine
@@ -69,7 +68,7 @@ class StartState(State):
         """Passes the given event to the group of sprites and invokes user handling.
 
         Args:
-            event (pygame.event): _description_
+            event (pygame.event): Event that is invoked by the user.
         """
         self.group.update(event)
         self.handle_user_input()
@@ -87,7 +86,6 @@ class UserModeState(State):
 
         Args:
             engine (Display engine): Engine that holds the configuration, image config, and user data.
-            background (tuple): Background color (R, G, B)
         """
         super().__init__(engine)
         self.engine = engine
@@ -109,7 +107,7 @@ class UserModeState(State):
         """Passes the given event to the group of sprites and invokes user handling.
 
         Args:
-            event (pygame.event): _description_
+            event (pygame.event): Event that is invoked by the user.
         """
         self.group.update(event)
         self.image_loader.on_event(event)
@@ -117,7 +115,80 @@ class UserModeState(State):
             if event.key == pygame.K_ESCAPE:
                 self.engine.data_manager.write_data()
                 self.eval.eval()
-                self.engine.machine.next_state = StartState(self.engine)
+                self.engine.machine.next_state = UserEvalState(self.engine)
+
+class UserEvalState(State):
+    """State that holds the plot of the data of a certain user.
+
+    Args:
+        State (_type_): Inherits from State
+    """
+    def __init__(self, engine):
+        """Inizializes the UserEvalState.
+
+        Args:
+            engine (Display engine): Engine that holds the configuration, image config, and user data.
+        """
+        super().__init__(engine)
+        self.engine = engine
+        self.background = self.engine.layout_config["background_color"]
+        self.group = pygame.sprite.Group()
+        self.username = self.engine.data_manager.user
+        self.load_plots()
+        self.scale_plots()
+        
+    def load_plots(self):
+        self.plots = [ pygame.image.load(f"evaluation/{self.username}.png").convert(),
+                      pygame.image.load(f"evaluation/overall.png").convert()]
+
+    def scale_plots(self):
+        self.x_middle = self.engine.size_x // 2        
+        self.size = min(self.x_middle, self.engine.size_y) //16
+        self.image_size = self.size * 13
+        self.plots = [pygame.transform.scale(img, (self.image_size, self.image_size)) for img in self.plots]
+
+    def draw_plots(self, surface):
+        """Displays the plots on the given surface.
+
+        Args:
+            surface (pygame.Surface): Surface on which the plots should be displayed.
+        """
+        x_spacing = [-self.size* 14, self.size]
+        for i, img in enumerate(self.plots):
+            x_position = self.x_middle + x_spacing[i]
+            y_position = 2* self.size
+            surface.blit(img, (x_position, y_position))
+
+    def display_message(self, surface):
+        """Displays the information on top of the screen.
+
+        Args:
+            surface (pygame.Surface): Surface on which the plots should be displayed.
+
+        """
+        self.text = self.engine.font.render("Press Escape to return to login. ", False, 0, self.background)
+        surface.blit(self.text, (self.x_middle - self.size * 14, self.size))
+    
+    def on_draw(self, surface):
+        """Draws the message and the plots on the surface.
+
+        Args:
+            surface (pygame.Surface): Surface on which the messages should be displayed.
+        """
+        surface.fill(self.background)
+        self.draw_plots(surface)
+        self.display_message(surface)
+
+    def on_event(self, event):
+        """Handles the given event and returns the engine to the StartState.
+        
+        Args: 
+            event (pygame.event): Event that is invoked by the user.
+        """
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            self.engine.machine.next_state = StartState(self.engine)
+
+            
 
 
 
@@ -139,20 +210,33 @@ class ErrorState(State):
         self.init_texts(error_message, sub_message)
 
     def init_texts(self, error_message, sub_message):
-        """Initializes the error and subtext messages."""
+        """Initializes the error and subtext messages.
+
+        Args:
+            error_message (str): Title of the Error Screen.
+            sub_message (str): Message of the Error Screen.
+        """
         self.error_font = pygame.font.SysFont(None, 60)
         self.error = self.error_font.render(error_message, False, ('darkred'), self.background)
         self.subtext = self.engine.font.render(sub_message, False, 0, self.background)
 
     def on_draw(self, surface):
-        """Draws the error messages on the surface."""
+        """Displays the messages on the screen.
+
+        Args:
+            surface (pygame.Surface): Surface on which the messages should be displayed.
+        """
         surface.fill(self.background)
         surface.blit(self.error, (20, self.engine.size_y * 5 // 15))
         surface.blit(self.subtext, (20, self.engine.size_y * 9 // 15))
 
     def on_event(self, event):
-        """Handles the given event and returns the engine to the StartState."""
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+        """Handles the given event and returns the engine to the StartState.
+
+        Args:
+            event (pygame.event): Event that is invoked by the user.
+        """
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             self.engine.machine.next_state = StartState(self.engine)
 
 class LogInErrorState2(ErrorState):
@@ -162,7 +246,7 @@ class LogInErrorState2(ErrorState):
         super().__init__(
             engine,
             "Error:",
-            "Wrong Username. Press Space to return to Login."
+            "Wrong Username. Press Escape to return to Login."
         )
 
 class ChosenUsernameErrorState2(ErrorState):
@@ -172,5 +256,5 @@ class ChosenUsernameErrorState2(ErrorState):
         super().__init__(
             engine,
             "Error:",
-            "This username is already used. Press Space to return to Login."
+            "This username is already used. Press Escape to return to Login."
         )

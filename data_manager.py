@@ -34,7 +34,7 @@ class Data_Manager():
         Returns:
             dict: data from all users
         """
-        with open('user_data.txt') as user_data_file:
+        with open('data/user_data.txt') as user_data_file:
             data_in = user_data_file.read()
             return json.loads(data_in)
     
@@ -70,10 +70,10 @@ class Data_Manager():
     def write_data(self):
         """Writes new user to datafile.
         """
-        with open('user_data.txt', 'w') as user_data_file:
+        with open('data/user_data.txt', 'w') as user_data_file:
             user_data_file.write(json.dumps(self.data))
 
-        with open('readable_data.txt', 'w') as user_data_file:
+        with open('data/readable_data.txt', 'w') as user_data_file:
             pprint.pprint(self.data, stream = user_data_file)
 
             

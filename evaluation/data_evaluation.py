@@ -94,6 +94,7 @@ class DataEvaluation:
     def eval(self):
         """Invokes collecting, plotting and printing of the data.
         """
+        self.username = self.engine.data_manager.user
         user_c, user_o = self.get_current_user_data(self.username)
         self.plot( user_c, user_o, self.username)
         all_c, all_o = self.get_overall_data()
