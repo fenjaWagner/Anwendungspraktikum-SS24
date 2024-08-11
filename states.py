@@ -137,11 +137,18 @@ class InstructionState(State):
         self.read_instruction_text()
     
     def read_instruction_text(self):
+        """Reads the instruction text and stores every line as an entry of a list.
+        """
         with open("instruction.txt", "r") as file:
             text = file.read()
             self.text_list = json.loads(text)
     
     def draw_text(self, surface):
+        """Draws the instruction text on the given surface.
+
+        Args:
+            surface (pygame.Surface): Surface on which the instruction text should be displayed.
+        """
         y_pos = self.engine.size_y // 6
         x_pos = self.engine.size_x // 6
         for x in range(len(self.text_list)):
@@ -149,8 +156,12 @@ class InstructionState(State):
             surface.blit(rendered, (x_pos, y_pos))
             y_pos += self.engine.font_size + 20
 
-        
     def on_draw(self, surface):
+        """Fills the given surface with the backgroundcolour and invokes drawing of the text.
+
+        Args:
+            surface (pygame.Surface): Surface on which the text should be displayed.
+        """
         surface.fill(self.background)
         self.draw_text(surface)
 
@@ -160,9 +171,12 @@ class InstructionState(State):
         Args: 
             event (pygame.event): Event that is invoked by the user.
         """
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-            self.engine.machine.next_state = UserModeState(self.engine)
-
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                self.engine.machine.next_state = UserModeState(self.engine)
+            elif event.key == pygame.K_ESCAPE:
+                self.engine.machine.next_state = StartState(self.engine)              
+        
 
 class UserEvalState(State):
     """State that holds the plot of the data of a certain user.
