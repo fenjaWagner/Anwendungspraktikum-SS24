@@ -2,8 +2,6 @@ import pygame
 import data_manager as dm
 import evaluation.data_evaluation as eval
 import conf
-from pprint import pprint
-
 
 class Machine:
     """Holds the current state of the screen.
