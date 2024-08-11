@@ -10,8 +10,8 @@ class State:
     def __init__(self, engine):
         self.engine = engine
 
-    def on_draw(self, surface) -> None: pass # implements what should be drawn on the screen
-    def on_event(self, event) -> None: pass # implements what should happen, when the user does certain things
+    def on_draw(self, surface) -> None: pass # Implements what should be drawn on the screen.
+    def on_event(self, event) -> None: pass # Implements what should happen, when the user does certain things.
 
 class StartState(State):
     """State that manages the Login.
