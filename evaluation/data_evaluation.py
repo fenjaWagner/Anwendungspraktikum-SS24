@@ -2,7 +2,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class DataEvaluation:
+    """Class that manages the evaluation of the userdata.
+    """
     def __init__(self, engine):
+        """Inizialization of the DataEvaluation class.
+
+        Args:
+            engine (DisplayEngine): Engine that holds the configuration, image config, and user data.
+        """
         self.engine = engine
         self.detail_modes = self.engine.config["detail_modes"]
         self.order = self.engine.config["order"]
@@ -10,7 +17,14 @@ class DataEvaluation:
         self.username = self.engine.data_manager.user
 
     def get_current_user_data(self, user):
-        print("user current user data: ", user)
+        """Returns lists of the data of the current user.
+
+        Args:
+            user (str): Name of the current user.
+
+        Returns:
+            list, list: Lists with the total and correct number of choices.
+        """
         out_of = []
         correct = []
         for mode in self.detail_modes:
@@ -22,6 +36,11 @@ class DataEvaluation:
         return correct, out_of
     
     def get_overall_data(self):
+        """Returns lists of the cummulated data of all users.
+
+        Returns:
+            list, list: Lists with the total and the correct number of choices of all users together.
+        """
         correct_all = [0 for _ in range(len(self.detail_modes))]
         out_of_all = [0 for _ in range(len(self.detail_modes))]
         for user in self.data.keys():
@@ -30,9 +49,15 @@ class DataEvaluation:
             out_of_all = [o + u for o, u in zip(out_of_all, user_out_of)]
         return correct_all, out_of_all
 
-
     
     def plot(self, correct, out_of, user):
+        """Plots the data given in correct_out list and out_of list.
+
+        Args:
+            correct (list): List of number of correct choices per game mode.
+            out_of (list): List of total number of choices per game mode.
+            user (str): Username.
+        """
         percentage = [(c / o * 100) if o != 0 else 0 for c, o in zip(correct, out_of)]
         print(f"percentage of {user} ", percentage)
         max_value = max(percentage)       
@@ -48,6 +73,8 @@ class DataEvaluation:
         plt.savefig("evaluation/"+user+".png", format="png", dpi=300, bbox_inches="tight")
 
     def print_csv(self):
+        """Prints the data dictionary into a csv file.
+        """
         csv_file = open("evaluation/data.csv", "w")
         for user in self.data.keys():
             for order in ["exp_proc", "exp_unproc"]:
@@ -65,6 +92,8 @@ class DataEvaluation:
 
 
     def eval(self):
+        """Invokes collecting, plotting and printing of the data.
+        """
         user_c, user_o = self.get_current_user_data(self.username)
         self.plot( user_c, user_o, self.username)
         all_c, all_o = self.get_overall_data()
