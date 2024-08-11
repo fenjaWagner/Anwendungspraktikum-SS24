@@ -94,6 +94,7 @@ class DataEvaluation:
                             percentage = 0
 
                         csv_file.write(string + str(out_of) + ", " +str(percentage) + "\n")
+        csv_file.close()
 
 
     def eval(self):
