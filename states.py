@@ -29,8 +29,8 @@ class StartState(State):
 
     def init_texts(self):
         """Initializes the static text objects."""
-        self.user_text = self.engine.font.render("Username:", False, 0, self.background)
-        self.new_user_text = self.engine.font.render("Sign up:", False, 0, self.background)
+        self.user_text = self.engine.font.render("If you already have a username, sign in with your username here: ", False, 0, self.background)
+        self.new_user_text = self.engine.font.render("If you are a new user, choose a username here:", False, 0, self.background)
 
     def init_input_boxes(self):
         """Initializes input boxes."""

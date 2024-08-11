@@ -13,7 +13,7 @@ import pygame
 #               "male_only" (only pictures of males)
 #               "female_between_males" (expression picture female, others male)
 #               "male_between_females" (expression picture male, others female)
-pygame.init()
+
 proc_path = "file_system/processed/"
 unproc_path = "file_system/unprocessed/"
 
@@ -26,9 +26,9 @@ conf = {"detail_modes": ["generic_detail", "individual_detail", "coarse", "compl
                    "male_only", 
                    "female_between_males",
                    "male_between_females"],
-        "layout": {"font": pygame.font.SysFont(None, 30), 
-                    "caption": "Fancy Name",
-                    "screen_size": (1400,750),
+        "layout": {"caption": "Fancy Name",
+                    "screen_size": (1400, 750),
+                    "font": "arial",
                     "original_image_size": (178, 218),
                    "processed_image_size": (224,224),
                    "background_color": (140,140,140)
