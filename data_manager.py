@@ -49,7 +49,7 @@ class Data_Manager():
             if username in self.data.keys():
                 self.user = username
                 self.user_data = self.data[self.user]
-                self.engine.machine.next_state = states.UserModeState(self.engine)
+                self.engine.machine.next_state = states.InstructionState(self.engine)
 
                 
             else:

@@ -1,4 +1,5 @@
 import pygame
+import json
 import input_management.text_input_box as in_box
 import Image_Management.image_logic as im
 import evaluation.data_evaluation as eval
@@ -116,6 +117,52 @@ class UserModeState(State):
                 self.engine.data_manager.write_data()
                 self.eval.eval()
                 self.engine.machine.next_state = UserEvalState(self.engine)
+
+class InstructionState(State):
+    """State that displays the instruction to the user.
+
+    Args:
+        State (_type_): Inherits from State
+    """
+    def __init__(self, engine):
+        """Inizializes the InstructionState.
+
+        Args:
+            engine (Display engine): Engine that holds the configuration, image config, and user data.
+        """
+        super().__init__(engine)
+        self.engine = engine
+        self.background = self.engine.layout_config["background_color"]
+        self.font = self.engine.font
+        self.read_instruction_text()
+    
+    def read_instruction_text(self):
+        with open("instruction.txt", "r") as file:
+            text = file.read()
+            self.text_list = json.loads(text)
+    
+    def draw_text(self, surface):
+        y_pos = self.engine.size_y // 6
+        x_pos = self.engine.size_x // 6
+        for x in range(len(self.text_list)):
+            rendered = self.font.render(self.text_list[x], 0, 0)
+            surface.blit(rendered, (x_pos, y_pos))
+            y_pos += self.engine.font_size + 20
+
+        
+    def on_draw(self, surface):
+        surface.fill(self.background)
+        self.draw_text(surface)
+
+    def on_event(self, event):
+        """Handles the given event and returns the engine to the StartState.
+        
+        Args: 
+            event (pygame.event): Event that is invoked by the user.
+        """
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+            self.engine.machine.next_state = UserModeState(self.engine)
+
 
 class UserEvalState(State):
     """State that holds the plot of the data of a certain user.

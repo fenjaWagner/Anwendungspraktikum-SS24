@@ -1,0 +1,7 @@
+["1. You will see four images in the top row and one image below them.",
+"2. Compare the image below with the four images above.",
+"3. Identify which of the four images in the top row shows the ",
+"    same person as the image below.",
+"4. To make your choice, you can either click on the matching image ",
+"    or use the keys 1, 2, 3, or 4 to select the corresponding image.",
+"Press enter to proceed."]

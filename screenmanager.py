@@ -53,7 +53,8 @@ class DisplayEngine:
         pygame.display.set_caption(self.caption)
         self.size_x = self.layout_config["screen_size"][0]
         self.size_y = self.layout_config["screen_size"][1]
-        self.font = pygame.font.SysFont(self.layout_config["font"], self.size_x//40)
+        self.font_size = min(self.size_x//40, self.size_y //20)
+        self.font = pygame.font.SysFont(self.layout_config["font"], self.font_size)
         self.surface = pygame.display.set_mode((self.size_x, self.size_y), flags)
         self.rect = self.surface.get_rect()
         
