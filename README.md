@@ -47,7 +47,7 @@ All detail modes, game modes that are not allready available in this implementat
 * **Image format:** At the moment, the programm can only deal with images stored as *.jpg*.
 * **Naming convention:** The processed images should be named exactly like the unprocessed images they are based on. Their name should be unique.
 
-* **Add a custom game mode:** Each game mode combines two sets of idenities: First, the *"exp_list"*, that contains the identities that can be used for the reference image. Secondly, the *"com_pic_list"*, that contains the identities that can be used as compare images. To add a game mode, add these two lists into the [image item dict](src/image_item.txt). Then add the name of the game mode to *image_conf["game_modes"]* in the [config file](src/conf.py) as in this example:
+* **Add a custom game mode:** Each game mode combines two sets of idenities: First, the *"exp_list"*, that contains the identifier of the persons that can be used for the reference image. Secondly, the *"com_pic_list"*, that contains the identities that can be used as compare images. To add a game mode, add these two lists into the [image item dict](src/image_item.txt). Then add the name of the game mode to *image_conf["game_modes"]* in the [config file](src/conf.py) as in this example:
 ```
 Game mode name: "cats_between_mice"
 exp_list: cats = ["mimi", "tom", "crookshanks"]
@@ -62,8 +62,8 @@ Add to image_item dict:
 "mice" : ["pieps", "jerry", "scabbers"]
 ```
 
-* **Identity management:** Each person that appears in the pictures has to have its own identity code. At the moment, numbers between 1 and 2240 are used. The dictionary in the [image item file](src/image_item.txt) contains a subdictionary called *"identity_pic"*. In here, the names of the images of the person with identity code x are stored in a list. At the moment the programm only uses the first two images in this list (that is two pictures per identity).
-The [Image Loader](src/Image_Management/image_logic.py) uses this dict to find the right images for the current game mode by using the names in the lists.
+* **Identity management:** Each person that appears in the pictures has to have its own identity identifier. At the moment, numbers between 1 and 2240 are used. The dictionary in the [image item file](src/image_item.txt) contains a subdictionary called *"identity_pic"*. In here, the names of the images of the person with identity identifier x are stored in a list. At the moment the programm only uses the first two images in this list (that is two pictures per identity).
+The [Image Loader](src/Image_Management/image_logic.py) uses this dict to find the right images for the current game mode by using the image names in the lists.
 ```
 "cats" : ["mimi", "tom", "crookshanks"]
 "mice" : ["pieps", "jerry", "scabbers"]
@@ -76,7 +76,7 @@ image_item dict: {"cats" : ["mimi", "tom", "crookshanks"],
                 } 
 
 ```
-* **Add new images:** To add new images of a new person, add the identity code into the lists of the game modes the person should appear in. Then add the following to the identity_pic dict in the [image item dict](src/image_item.txt)
+* **Add new images:** To add new images of a new person, add the identity identifier into the lists of the game modes the person should appear in. Then add the following to the identity_pic dict in the [image item dict](src/image_item.txt):
 ```
 <identity code>  : [<image_1_name>, <image_2_name>]
 ```
