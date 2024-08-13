@@ -1,7 +1,7 @@
 # Can 3DMM seperate identity and expression data?
 
 
-
+An Sabrina: den Teil ignorieren :D
 Description, detail mode, game mode definition
 
 The main features:
@@ -10,6 +10,8 @@ The main features:
 * **Animation:** animate the face with realistic wrinkle deformations.
 * **Robustness:** tested on facial images in unconstrained conditions.  Our method is robust to various poses, illuminations and occlusions. 
 * **Accurate:** state-of-the-art 3D face shape reconstruction on the [NoW Challenge](https://ringnet.is.tue.mpg.de/challenge) benchmark dataset.
+
+## Hier gehts los.
   
 ## Getting Started
 Clone the repo:
