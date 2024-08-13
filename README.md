@@ -1,12 +1,8 @@
 # Can 3DMM seperate identity and expression data?
 
-<p align="center"> 
-<workflow src="docs/Workflow.png">
-</p>
-<p align="center">Overview of the modules and their workflow in the game.<p align="center">
 
 
-Description
+Description, detail mode, game mode definition
 
 The main features:
 
@@ -37,95 +33,72 @@ python3 run.py
 ```
 
 ### Config Settings
-All necessary setting changes can be implemented through the [configs](src/conf.py).
+All necessary setting changes can be implemented through conf in [configs](src/conf.py).
 Conf:
-* **detail_modes:** 
-* **order:** The order states whether the user is given a processed image and has to choose from unprocessed pictures or vice versa.
-* **game_modes:** Sets in which combination images of people with certain characteristics are shown to the user to choose from. 
+* **detail_modes:** List of implemented details that are applied to the processed images via DECA.
+* **order:** The order states whether the user is given a processed image and has to choose from unprocessed pictures ("exp_proc") or vice versa ("exp_unproc").
+* **game_modes:** List of the implemented combinations of images of people with certain characteristics that are shown to the user to choose from. 
 * **layout:** Layout settings for the game screen
 
-Image_conf:
-* **game_modes:** 
+## Add custom detail modes, game modes or new images
+All detail modes, game modes that are not allready available in this implementation can be added via the image_conf in the [config file](src/conf.py). New images can be added by respecting the file structure and adding them to the dictionary in the [image_item file](src/image_item.txt).
+* **Image format:** At the moment, the programm can only deal with images stored as *.jpg*.
+* **Naming convention:** The processed images should be named exactly like the unprocessed images they are based on. Their name should be unique.
 
-## Evaluation
-DECA (ours) achieves 9% lower mean shape reconstruction error on the [NoW Challenge](https://ringnet.is.tue.mpg.de/challenge) dataset compared to the previous state-of-the-art method.  
-The left figure compares the cumulative error of our approach and other recent methods (RingNet and Deng et al. have nearly identitical performance, so their curves overlap each other). Here we use point-to-surface distance as the error metric, following the NoW Challenge.  
-<p align="left"> 
-<img src="Doc/images/DECA_evaluation_github.png">
+* **Add a custom game mode:** Each game mode combines two sets of idenities: First, the *"exp_list"*, that contains the identities that can be used for the reference image. Secondly, the *"com_pic_list"*, that contains the identities that can be used as compare images. To add a game mode, add these two lists into the [image item dict](src/image_item.txt). Then add the name of the game mode to *image_conf["game_modes"]* in the [config file](src/conf.py) as in this example:
+```
+Game mode name: "cats_between_mice"
+exp_list: cats = ["mimi", "tom", "crookshanks"]
+com_pic_list: mice = ["pieps", "jerry", "scabbers"]
+
+Add to image_item["game_modes"]:
+{"cats_between_mice" : {"exp_list" : "cats",
+                        "comp_pic_list" : "mice"}}
+
+Add to image_item dict:
+"cats" : ["mimi", "tom", "crookshanks"]
+"mice" : ["pieps", "jerry", "scabbers"]
+```
+
+* **Identity management:** Each person that appears in the pictures has to have its own identity code. At the moment, numbers between 1 and 2240 are used. The dictionary in the [image item file](src/image_item.txt) contains a subdictionary called *"identity_pic"*. In here, the names of the images of the person with identity code x are stored in a list. At the moment the programm only uses the first two images in this list (that is two pictures per identity).
+The [Image Loader](src/Image_Management/image_logic.py) uses this dict to find the right images for the current game mode by using the names in the lists.
+```
+"cats" : ["mimi", "tom", "crookshanks"]
+"mice" : ["pieps", "jerry", "scabbers"]
+
+image_item dict: {"cats" : ["mimi", "tom", "crookshanks"],
+                  "mice" : ["pieps", "jerry", "scabbers"],
+                  "identity_pic": {"mimi": ["mimi_pic_1", "mimi_pic_2"],
+                                   "tom": ["tom_pic_1", "tom_pic_2"],
+                                    ...}
+                } 
+
+```
+* **Add new images:** To add new images of a new person, add the identity code into the lists of the game modes the person should appear in. Then add the following to the identity_pic dict in the [image item dict](src/image_item.txt)
+```
+<identity code>  : [<image_1_name>, <image_2_name>]
+```
+
+* **Add a custom detail mode:** 
+    1. Add a folder that is named exactly like the name of the detail mode into *src/file_system/processed* that contains the images with the respective details. 
+    2. Add the path to that folder twice into the image_config in [conf.py](src/conf.py) under "exp_proc" and "exp_unproc" so the [Image Loader](src/Image_Management/image_logic.py) can find the right images depending on the order set in the config above.
+
+
+## Workflow of the program
+The programm uses a so called display engine that holds the game loop. This engine manages what is to be shown on the screen via different states. These states also implement what happens when the user does certain actions.
+
+<p align="center"> 
+<img src="docs/Workflow.png">
 </p>
+<p align="center">Overview of the modules and the workflow<p align="center">
 
-For more details of the evaluation, please check our [arXiv paper](https://arxiv.org/abs/2012.04012). 
 
-## Training
-1. Prepare Training Data
-
-    a. Download image data  
-    In DECA, we use [VGGFace2](https://arxiv.org/pdf/1710.08092.pdf), [BUPT-Balancedface](http://www.whdeng.cn/RFW/Trainingdataste.html) and [VoxCeleb2](https://www.robots.ox.ac.uk/~vgg/data/voxceleb/vox2.html)  
-
-    b. Prepare label  
-    [FAN](https://github.com/1adrianb/2D-and-3D-face-alignment) to predict 68 2D landmark  
-    [face_segmentation](https://github.com/YuvalNirkin/face_segmentation) to get skin mask  
-
-    c. Modify dataloader   
-    Dataloaders for different datasets are in decalib/datasets, use the right path for prepared images and labels. 
-
-2. Download face recognition trained model  
-    We use the model from [VGGFace2-pytorch](https://github.com/cydonia999/VGGFace2-pytorch) for calculating identity loss,
-    download [resnet50_ft](https://drive.google.com/file/d/1A94PAAnwk6L7hXdBXLFosB_s0SzEhAFU/view),
-    and put it into ./data  
-
-3. Start training
-
-    Train from scratch: 
-    ```bash
-    python main_train.py --cfg configs/release_version/deca_pretrain.yml 
-    python main_train.py --cfg configs/release_version/deca_coarse.yml 
-    python main_train.py --cfg configs/release_version/deca_detail.yml 
-    ```
-    In the yml files, write the right path for 'output_dir' and 'pretrained_modelpath'.  
-    You can also use [released model](https://drive.google.com/file/d/1rp8kdyLPvErw2dTmqtjISRVvQLj6Yzje/view) as pretrained model, then ignor the pretrain step.
 
 ## Related works:  
 * for better emotion prediction: [EMOCA](https://github.com/radekd91/emoca)  
 * for better skin estimation: [TRUST](https://github.com/HavenFeng/TRUST)
 
-## Citation
-If you find our work useful to your research, please consider citing:
-```
-@inproceedings{DECA:Siggraph2021,
-  title={Learning an Animatable Detailed {3D} Face Model from In-The-Wild Images},
-  author={Feng, Yao and Feng, Haiwen and Black, Michael J. and Bolkart, Timo},
-  journal = {ACM Transactions on Graphics, (Proc. SIGGRAPH)}, 
-  volume = {40}, 
-  number = {8}, 
-  year = {2021}, 
-  url = {https://doi.org/10.1145/3450626.3459936} 
-}
-```
 
-<!-- ## Notes
-1. Training code will also be released in the future. -->
 
-## License
-This code and model are available for non-commercial scientific research purposes as defined in the [LICENSE](https://github.com/YadiraF/DECA/blob/master/LICENSE) file.
-By downloading and using the code and model you agree to the terms in the [LICENSE](https://github.com/YadiraF/DECA/blob/master/LICENSE). 
-
-## Acknowledgements
-For functions or scripts that are based on external sources, we acknowledge the origin individually in each file.  
-Here are some great resources we benefit:  
-- [FLAME_PyTorch](https://github.com/soubhiksanyal/FLAME_PyTorch) and [TF_FLAME](https://github.com/TimoBolkart/TF_FLAME) for the FLAME model  
-- [Pytorch3D](https://pytorch3d.org/), [neural_renderer](https://github.com/daniilidis-group/neural_renderer), [SoftRas](https://github.com/ShichenLiu/SoftRas) for rendering  
-- [kornia](https://github.com/kornia/kornia) for image/rotation processing  
-- [face-alignment](https://github.com/1adrianb/face-alignment) for cropping   
-- [FAN](https://github.com/1adrianb/2D-and-3D-face-alignment) for landmark detection
-- [face_segmentation](https://github.com/YuvalNirkin/face_segmentation) for skin mask
-- [VGGFace2-pytorch](https://github.com/cydonia999/VGGFace2-pytorch) for identity loss  
-
-We would also like to thank other recent public 3D face reconstruction works that allow us to easily perform quantitative and qualitative comparisons :)  
-[RingNet](https://github.com/soubhiksanyal/RingNet), 
-[Deep3DFaceReconstruction](https://github.com/microsoft/Deep3DFaceReconstruction/blob/master/renderer/rasterize_triangles.py), 
-[Nonlinear_Face_3DMM](https://github.com/tranluan/Nonlinear_Face_3DMM),
-[3DDFA-v2](https://github.com/cleardusk/3DDFA_V2),
-[extreme_3d_faces](https://github.com/anhttran/extreme_3d_faces),
-[facescape](https://github.com/zhuhao-nju/facescape)
-<!-- 3DMMasSTN, DenseReg, 3dmm_cnn, vrn, pix2vertex -->
+## Acknowledgements 
+- [DECA](add link) 
