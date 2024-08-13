@@ -33,6 +33,14 @@ To run the game use
 ```bash
 python3 run.py
 ```
+### Login
+Each user logs in via its own unique login name (or number). 
+
+### Result Collection
+The results of each user are displayed in three different ways in the folder [result_data](result_data):
+1. The data dictionary that is used while the programm is running is printed in readable style in [readable_data.txt](result_data/readable_data.txt).
+2. The results are printed into a the csv file [data.csv](result_data/data.csv).
+3. For each user and for the overall result a plot is saved in [plots](result_data/plots) that shows the results in each detail mode.
 
 ### Config Settings
 All necessary setting changes can be implemented through conf in [configs](src/conf.py).
