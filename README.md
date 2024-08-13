@@ -1,17 +1,4 @@
 # Can 3DMM seperate identity and expression data?
-
-
-An Sabrina: den Teil ignorieren :D
-Description, detail mode, game mode definition
-
-The main features:
-
-* **Reconstruction:** produces head pose, shape, detailed face geometry, and lighting information from a single image.
-* **Animation:** animate the face with realistic wrinkle deformations.
-* **Robustness:** tested on facial images in unconstrained conditions.  Our method is robust to various poses, illuminations and occlusions. 
-* **Accurate:** state-of-the-art 3D face shape reconstruction on the [NoW Challenge](https://ringnet.is.tue.mpg.de/challenge) benchmark dataset.
-
-## Hier gehts los.
   
 ## Getting Started
 Clone the repo:
@@ -46,7 +33,7 @@ The results of each user are displayed in three different ways in the folder [re
 All necessary setting changes can be implemented through conf in [configs](src/conf.py).
 Conf:
 * **detail_modes:** List of implemented details that are applied to the processed images via DECA.
-* **order:** The order states whether the user is given a processed image and has to choose from unprocessed pictures ("exp_proc") or vice versa ("exp_unproc").
+* **order:** The order states whether the user is given a processed image as reference image and has to choose from unprocessed pictures ("exp_proc") or vice versa ("exp_unproc").
 * **game_modes:** List of the implemented combinations of images of people with certain characteristics that are shown to the user to choose from. 
 * **layout:** Layout settings for the game screen
 
