@@ -173,7 +173,7 @@ class ImageLoader:
         Returns:
             dict: Dictionary containing image items.
         """
-        with open("data/image_item.txt", "r") as file:
+        with open("image_item.txt", "r") as file:
             dict = json.loads(file.read())
         return dict
     
