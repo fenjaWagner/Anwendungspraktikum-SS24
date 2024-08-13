@@ -19,7 +19,7 @@ unproc_path = "file_system/unprocessed/"
 conf = {"detail_modes": ["generic_detail", "individual_detail", "coarse", "complete_identity_coarse", "complete_identity_detail"],
         # The order states whether the user is given a processed image and has to choose 
         # from unprocessed pictures or vice versa.
-        "order": "exp_unproc", # or exp_unproc
+        "order": "exp_unproc", # or exp_proc
         "game_modes": ["mixed", 
                    "poc_between_non_pocs", 
                    "non_poc_between_pocs", 

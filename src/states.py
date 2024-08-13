@@ -99,7 +99,7 @@ class UserModeState(State):
         self.group = pygame.sprite.Group()
 
         # Manages the loading, displaying of the images and the user input
-        self.image_loader = im.Image_Loader(self.engine, self.background) 
+        self.image_loader = im.ImageDrawer(self.engine, self.background) 
 
         # Manages the evaluation of the user data once the user quits the game.
         self.eval = eval.DataEvaluation(self.engine)
