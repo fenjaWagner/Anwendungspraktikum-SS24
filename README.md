@@ -90,12 +90,5 @@ The programm uses a so called display engine that holds the game loop. This engi
 <p align="center">Overview of the modules and the workflow<p align="center">
 
 
-
-## Related works:  
-* for better emotion prediction: [EMOCA](https://github.com/radekd91/emoca)  
-* for better skin estimation: [TRUST](https://github.com/HavenFeng/TRUST)
-
-
-
 ## Acknowledgements 
-- [DECA](add link) 
+- [DECA](https://github.com/yfeng95/DECA) 
