@@ -72,6 +72,7 @@ class DataEvaluation:
         ax.bar(self.detail_modes, percentage, label=self.detail_modes)
         ax.set_ylabel('Percentage')
         ax.set_title(f'Percentage of correct answers in order {self.order} of {user}.')
+        ax.set_xticks(ax.get_xticks())
         ax.set_xticklabels(self.detail_modes, rotation=45, ha='right')  # Rotate the labels by 45 degrees
         ax.set_ylim(0, max(max_value, 25) + 5)
         plt.savefig("../result_data/plots/"+user+"-"+self.order +".png", format="png", dpi=300, bbox_inches="tight")

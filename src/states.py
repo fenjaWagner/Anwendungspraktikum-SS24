@@ -213,8 +213,8 @@ class UserEvalState(State):
     def load_plots(self):
         """Loads the plot images.
         """
-        self.plots = [ pygame.image.load(f"../result_data/plots/{self.username + "-"+self.engine.config["order"]}.png").convert(),
-                      pygame.image.load(f"../result_data/plots/{"overall-"+self.engine.config["order"]}.png").convert()]
+        self.plots = [ pygame.image.load(f"../result_data/plots/{self.username + '-'+self.engine.config['order']}.png").convert(),
+                      pygame.image.load(f"../result_data/plots/{'overall-'+self.engine.config['order']}.png").convert()]
 
     def scale_plots(self):
         """Scales the size of the plot images depending on the screen size.
